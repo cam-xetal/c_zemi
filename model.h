@@ -58,6 +58,8 @@ inline void MODEL :: init(void){
 
 inline void MODEL :: displayHp(){
 	DrawBox(400, 10, 600, 30, GetColor(125, 255, 0), FALSE);
+	if(hp <= 0)
+		hp = 0;
 	DrawBox(400, 10, 400+hp*2, 30, GetColor(125, 255, 0), TRUE);
 }
 //private--end
@@ -66,7 +68,8 @@ inline void MODEL :: displayHp(){
 inline MODEL :: MODEL(SHOT* mS, float rotateY){
 	init();
 	ModelHandle = MV1LoadModel("model\\heri\\heri.mv1");
-	MV1SetupCollInfo(ModelHandle, -1, 8, 16, 32);
+	MV1SetFrameVisible(ModelHandle, 39, FALSE);
+	MV1SetupCollInfo(ModelHandle, 39, 8, 16, 32);
 	attachIndex = MV1AttachAnim(ModelHandle, 0, -1, FALSE);
 	animTime = MV1GetAttachAnimTotalTime(ModelHandle, attachIndex);
 	playTime = 0.0f;

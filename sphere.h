@@ -143,7 +143,8 @@ inline bool SPHERE :: getFlag(){
 
 //•\Ž¦
 inline void SPHERE :: display(void){
-	DrawSphere3D(VGet(x, y, z), radius, 16, col, col, TRUE); 
+	if(dflag)
+		DrawSphere3D(VGet(x, y, z), radius, 16, col, col, TRUE);
 }
 
 //ˆÚ“®

@@ -10,6 +10,7 @@ void MODEL :: display(){
 	mS->display();
 	//MV1SetPosition(ModelHandle, VGet(x+x0, y+y0, z+z0));
 	//MV1SetRotationXYZ(ModelHandle, VGet(rotateX, rotateY, rotateZ));
+	MV1RefreshCollInfo(ModelHandle, 39);
 	MATRIX rot = MMult(MMult(MGetRotX(rotateX), MGetRotZ(rotateZ)),MGetRotY(rotateY));
 	MATRIX trans = MGetTranslate(VGet(x+x0, y+y0, z+z0));
 	MV1SetMatrix(ModelHandle, MMult(rot, trans));
@@ -93,8 +94,8 @@ void MODEL :: move(bool fFlag, bool bFlag, bool upFlag, bool rRFlag, bool lRFlag
 void MODEL :: shot(){
 	//’e‚Ì”­ŽË
 	if(count > 10){
-		mS->newShot(VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)), 15, rotateY-0.025f, 60.0f);
-		mS->newShot(VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)), 15, rotateY+0.025f, 60.0f);
+		mS->newShot(VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)), 15, rotateY-0.025f, 100.0f);
+		mS->newShot(VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)), 15, rotateY+0.025f, 100.0f);
 		count=0;
 	}else{
 		count++;

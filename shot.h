@@ -75,7 +75,7 @@ inline int SHOT :: collisionModel(int ModelHandle){
 	int count = 0;
 	for(int i=0;i<MAX_SHOT;i++){
 		if(s[i].getFlag()){
-			result = MV1CollCheck_Sphere(ModelHandle, -1, s[i].getPos(), s[i].getRadius());
+			result = MV1CollCheck_Sphere(ModelHandle, 39, s[i].getPos(), s[i].getRadius());
 			if(result.HitNum >= 1){
 				s[i].setFlag(false);
 				count++;
