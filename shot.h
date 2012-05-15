@@ -18,6 +18,7 @@ public:
 	void delShot(int index);
 	//“–‚½‚è”»’è
 	int collisionModel(int ModelHandle);
+	int collisionTarget(int ModelHandle);
 	//inline--end
 };
 
@@ -76,6 +77,22 @@ inline int SHOT :: collisionModel(int ModelHandle){
 	for(int i=0;i<MAX_SHOT;i++){
 		if(s[i].getFlag()){
 			result = MV1CollCheck_Sphere(ModelHandle, 39, s[i].getPos(), s[i].getRadius());
+			if(result.HitNum >= 1){
+				s[i].setFlag(false);
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
+//“–‚½‚è”»’è
+inline int SHOT :: collisionTarget(int ModelHandle){
+	MV1_COLL_RESULT_POLY_DIM result;
+	int count = 0;
+	for(int i=0;i<MAX_SHOT;i++){
+		if(s[i].getFlag()){
+			result = MV1CollCheck_Sphere(ModelHandle, -1, s[i].getPos(), s[i].getRadius());
 			if(result.HitNum >= 1){
 				s[i].setFlag(false);
 				count++;

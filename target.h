@@ -24,7 +24,7 @@ public:
 //private--start
 inline void TARGET :: getRand(){
 	x = (float)(((MAX_X-500.0f)-(MIN_X+500.0f)+1.0f)*((double)rand()/(double)(RAND_MAX+0.1f))+(MIN_X+500.0f));
-	y = (float)(((MAX_Y-50.0f)-MIN_Y+1.0f)*((double)rand()/(double)(RAND_MAX+0.1f))+MIN_Y);
+	y = (float)(((MAX_Y-150.0f)-MIN_Y+1.0f)*((double)rand()/(double)(RAND_MAX+0.1f))+MIN_Y+50);
 	z = (float)(((MAX_Z-500.0f)-(MIN_Z+500.0f)+1.0f)*((double)rand()/(double)(RAND_MAX+0.1f))+(MIN_Z+500.0f));
 	rotate = (float)((2*PI+1.0f)*((double)rand()/(double)(RAND_MAX+0.1f)));
 }
@@ -46,7 +46,7 @@ inline void TARGET :: newTarget(){
 	getRand();
 	MV1SetPosition(ModelHandle, VGet(x, y, z));
 	MV1SetRotationXYZ(ModelHandle, VGet(0, rotate, 0));
-	MV1SetupCollInfo(ModelHandle, -1, 16, 16, 16);
+	MV1SetupCollInfo(ModelHandle, -1, 8, 8, 8);
 }
 
 inline void TARGET :: delTarget(){

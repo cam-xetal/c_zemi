@@ -33,7 +33,6 @@ inline void PLAYER :: init(void){
 inline void PLAYER :: displayXYZ(void){
 	int col = GetColor(255, 255, 255);
 	DrawFormatString(10, 10, col, "x:%.1f, y:%.1f, z:%.1f", x, y, z);
-	DrawFormatString(10, 100, col, "x:%.1f, y:%.1f, z:%.1f", x+10*cos(rotateY), y, z+10*sin(rotateY));
 }
 
 inline void PLAYER :: displayV(void){
@@ -62,8 +61,8 @@ inline void PLAYER :: addCR(float cr){
 	cRotate += cr;
 	if(cRotate > 2*PI)
 		cRotate -= 2*PI;
-	cx = x + x0 + 1500*sinf(cRotate);
-	cy = y + y0 + 300.0f;
-	cz = z + z0 + 1500*cosf(cRotate);
+	cx = x + x0 + 800*sinf(cRotate);
+	cy = y + y0 + 150.0f;
+	cz = z + z0 + 800*cosf(cRotate);
 }
 //public--end

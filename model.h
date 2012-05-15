@@ -58,7 +58,7 @@ inline void MODEL :: init(void){
 
 inline void MODEL :: displayHp(){
 	DrawBox(400, 10, 600, 30, GetColor(125, 255, 0), FALSE);
-	if(hp <= 0)
+	if(hp < 0)
 		hp = 0;
 	DrawBox(400, 10, 400+hp*2, 30, GetColor(125, 255, 0), TRUE);
 }
@@ -107,7 +107,7 @@ inline int MODEL :: getModelHandle(){
 
 inline int MODEL :: damageCheck(SHOT* oS){
 	int dcount = oS->collisionModel(ModelHandle);
-	hp -= dcount*10;
+	hp -= dcount*5;
 	return hp;
 }
 //public--end

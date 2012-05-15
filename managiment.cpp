@@ -88,6 +88,8 @@ void MANAGIMENT :: freeMode(){
 	int ModelHandle;
 	//床読み込み
 	ModelHandle = MV1LoadModel("model\\floor\\floor.mqo");
+	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
+	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 
 	//弾の配列の確保
 	SHOT* mShot;
@@ -104,17 +106,14 @@ void MANAGIMENT :: freeMode(){
 		ClearDrawScreen();
 		//ここから
 		//床の描画
-		MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 		MV1DrawModel(ModelHandle);
 		//FPSの表示
 		fpsDisplay();
-		//カプセルの表示
-		//DrawCapsule3D(VGet(320.0f, 100.0f, 0.0f), VGet(320.0f, 300.0f, 0.0f), 40.0f, 8, GetColor(0,255,0), GetColor(255,255,255), TRUE);
 		//モデルの操作,描画
 		p->control();
 		p->display();
 		t.display();
-		if(mShot->collisionModel(t.getModelHandle()) > 0){
+		if(mShot->collisionTarget(t.getModelHandle()) > 0){
 			t.delTarget();
 			t.newTarget();
 		}
@@ -130,6 +129,7 @@ void MANAGIMENT :: battleModeC(){
 	int ModelHandle;
 	//床読み込み
 	ModelHandle = MV1LoadModel("model\\floor\\floor.mqo");
+	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 
 	//弾の配列の確保
@@ -140,11 +140,8 @@ void MANAGIMENT :: battleModeC(){
 	//モデルの読み込み
 	PLAYER* p;
 	ENEMY* e;
-	p = new PLAYER(VGet(0, 0, 2000.0), 0.0f, mShot);
-	e = new ENEMY(VGet(0, 0, -2000), PI, eShot);
-	//ターゲットの読み込み
-	TARGET t;
-	t.newTarget();
+	p = new PLAYER(VGet(0, 0, 4000.0), 0.0f, mShot);
+	e = new ENEMY(VGet(0, 0, -4000), PI, eShot);
 
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
@@ -154,8 +151,6 @@ void MANAGIMENT :: battleModeC(){
 		MV1DrawModel(ModelHandle);
 		//FPSの表示
 		fpsDisplay();
-		//カプセルの表示
-		//DrawCapsule3D(VGet(320.0f, 100.0f, 0.0f), VGet(320.0f, 300.0f, 0.0f), 40.0f, 8, GetColor(0,255,0), GetColor(255,255,255), TRUE);
 		//モデルの操作,描画
 		//プレイヤー
 		p->control();
@@ -163,14 +158,7 @@ void MANAGIMENT :: battleModeC(){
 		//敵
 		e->control(p->getRotateY(), p->getVector());
 		e->display();
-		/*
-		//的
-		t.display();
-		if(mShot->collisionModel(t.getModelHandle())){
-			t.delTarget();
-			t.newTarget();
-		}
-		*/
+		
 		if(p->damageCheck(eShot) <= 0)
 			break;
 		if(e->damageCheck(mShot) <= 0)
@@ -181,6 +169,7 @@ void MANAGIMENT :: battleModeC(){
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
+
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
 		ClearDrawScreen();
