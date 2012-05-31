@@ -15,8 +15,7 @@ public:
 	void selectAction(void);
 	void freeMode();
 	void battleModeC();
-	void battleModeH(){
-	}
+	void battleModeH();
 };
 
 //public--start

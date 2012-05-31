@@ -1,7 +1,8 @@
 #include "DxLib.h"
 #include "managiment.h"
 #include "player.h"
-#include "enemy.h"
+//#include "enemy.h"
+#include "enemy_net.h"
 #include "target.h"
 
 //FPS表示関数
@@ -157,6 +158,72 @@ void MANAGIMENT :: battleModeC(){
 		p->display();
 		//敵
 		e->control(p->getRotateY(), p->getVector());
+		e->display();
+		
+		if(p->damageCheck(eShot) <= 0)
+			break;
+		if(e->damageCheck(mShot) <= 0)
+			break;
+		mShot->collisionModel(e->getModelHandle());
+		eShot->collisionModel(p->getModelHandle());
+		//ここまで
+		//裏画面の内容を表画面に反映
+		ScreenFlip();
+	}
+
+	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
+		// 画面をクリア
+		ClearDrawScreen();
+		//床の描画
+		MV1DrawModel(ModelHandle);
+		//FPSの表示
+		fpsDisplay();
+		p->addCR(0.01f);
+		p->display();
+		e->display();
+		//裏画面の内容を表画面に反映
+		ScreenFlip();
+	}
+		
+	MV1DeleteModel(ModelHandle);
+	delete mShot;
+	delete eShot;
+	delete p;
+	delete e;
+}
+
+void MANAGIMENT :: battleModeH(){
+		int ModelHandle;
+	//床読み込み
+	ModelHandle = MV1LoadModel("model\\floor\\floor.mqo");
+	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
+	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
+
+	//弾の配列の確保
+	SHOT* mShot;
+	SHOT* eShot;
+	mShot = new SHOT(GetColor(255, 255, 0));
+	eShot = new SHOT(GetColor(255, 0, 0));
+	//モデルの読み込み
+	PLAYER* p;
+	ENEMY_NET* e;
+	p = new PLAYER(VGet(0, 0, 4000.0), 0.0f, mShot);
+	e = new ENEMY_NET(VGet(0, 0, -4000), PI, eShot);
+
+	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
+		// 画面をクリア
+		ClearDrawScreen();
+		//ここから
+		//床の描画
+		MV1DrawModel(ModelHandle);
+		//FPSの表示
+		fpsDisplay();
+		//モデルの操作,描画
+		//プレイヤー
+		p->control();
+		p->display();
+		//敵
+		e->control(/*p->getRotateY(), p->getVector()*/);
 		e->display();
 		
 		if(p->damageCheck(eShot) <= 0)
