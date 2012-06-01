@@ -1,12 +1,17 @@
+#ifndef NET_TRANS_B
+
+#define NET_TRANS_B
+
 #include <stdio.h>
 #include "net_udp.h"
+//#include "DxLib.h"
 
 class NET_TRANS : public NET_UDP{
 private:
 public:
-	NET_TRANS(char* ip, int port) : NET_UDP(ip, port){}
+	NET_TRANS(char* src_ip, int src_port, char* sin_ip, int sin_port) : NET_UDP(src_ip, src_port, sin_ip, sin_port){}
 	
-	void sendData(float x, float y, float z, float rotate, bool shot){
+	void sendData(float x, float y, float z, float rotateX, float rotateY, float rotateZ, bool shot, int hp){
 		char buf[256];
 		int flag;
 
@@ -14,21 +19,17 @@ public:
 			flag = 1;
 		else
 			flag = 0;
-		sprintf_s(buf, "x:%lf,y:%lf,z:%lf,rotate:%lf,shot:%d", x, y, z, rotate, flag);
+		sprintf_s(buf, "x:%f,y:%f,z:%f,rotateX:%f,rotateY:%f,rotateZ:%f,shot:%d,hp:%d", x, y, z, rotateX, rotateY, rotateZ, flag, hp);
 		send(buf);
 	}
 
-	void recvData(float* x, float* y, float* z, float* rotate, bool* shot){
+	void recvData(float* x, float* y, float* z, float* rotateX, float* rotateY, float* rotateZ, bool* shot, int* hp){
 		int ishot=0;
-		*x = 0.0;
-		*y = 0.0;
-		*z = 0.0;
-		*rotate = 0.0;
 		
 		char str[256];
 		recv(str);
 				
-		int i = sscanf_s(str, "x:%f,y:%f,z:%f,rotate:%f,shot:%d", x, y, z, rotate, &ishot);
+		int i = sscanf_s(str, "x:%f,y:%f,z:%f,rotateX:%f,rotateY:%f,rotateZ:%f,shot:%d,hp:%d", x, y, z, rotateX, rotateY, rotateZ, &ishot, hp);
 
 		if(ishot == 1)
 			*shot = true;
@@ -36,3 +37,5 @@ public:
 			*shot = false;
 	}
 };
+
+#endif

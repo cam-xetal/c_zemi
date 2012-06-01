@@ -36,7 +36,7 @@ public:
 	//inline--end
 	void virtual display();
 	void move(bool fFlag, bool bFlag, bool upFlag, bool rRFlag, bool lRFlag, bool vFlag);
-	void shot();
+	int virtual shot();
 };
 
 //private--start
@@ -84,6 +84,7 @@ inline MODEL :: MODEL(char* file, SHOT* mS, float rotateY){
 	this->rotateY = rotateY;
 }
 inline MODEL :: ~MODEL(){
+	MV1TerminateCollInfo(ModelHandle, 39);
 	MV1DeleteModel(ModelHandle);
 }
 

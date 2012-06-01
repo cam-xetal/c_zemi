@@ -170,7 +170,6 @@ void MANAGIMENT :: battleModeC(){
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
-
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
 		ClearDrawScreen();
@@ -193,7 +192,7 @@ void MANAGIMENT :: battleModeC(){
 }
 
 void MANAGIMENT :: battleModeH(){
-		int ModelHandle;
+	int ModelHandle;
 	//床読み込み
 	ModelHandle = MV1LoadModel("model\\floor\\floor.mqo");
 	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
@@ -204,11 +203,27 @@ void MANAGIMENT :: battleModeH(){
 	SHOT* eShot;
 	mShot = new SHOT(GetColor(255, 255, 0));
 	eShot = new SHOT(GetColor(255, 0, 0));
+
+	
+	READ_INIT* read;
+	read = new READ_INIT();
+	char src_ip[32];
+	int src_port;
+	char sin_ip[32];
+	int sin_port;
+	read->read(src_ip, &src_port, sin_ip, &sin_port);
+	delete read;
+	
+	NET_TRANS* net;
+	net = new NET_TRANS(src_ip, src_port, sin_ip, sin_port);
+	net->setBind();
+
 	//モデルの読み込み
 	PLAYER* p;
 	ENEMY_NET* e;
-	p = new PLAYER(VGet(0, 0, 4000.0), 0.0f, mShot);
-	e = new ENEMY_NET(VGet(0, 0, -4000), PI, eShot);
+	p = new PLAYER(VGet(0, 0, 4000.0), 0.0f, mShot, net);
+	e = new ENEMY_NET(VGet(0, 0, -4000), PI, eShot, net);
+	e->start(e);
 
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
@@ -222,8 +237,9 @@ void MANAGIMENT :: battleModeH(){
 		//プレイヤー
 		p->control();
 		p->display();
+		p->send();
 		//敵
-		e->control(/*p->getRotateY(), p->getVector()*/);
+		//e->control(/*p->getRotateY(), p->getVector()*/);
 		e->display();
 		
 		if(p->damageCheck(eShot) <= 0)
@@ -236,6 +252,7 @@ void MANAGIMENT :: battleModeH(){
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
+	e->stop();
 
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
@@ -257,3 +274,5 @@ void MANAGIMENT :: battleModeH(){
 	delete p;
 	delete e;
 }
+
+

@@ -28,7 +28,7 @@ inline void MENU :: setPos(int x, int y){
 }
 
 inline void MENU :: setStr(char* str){
-	strcpy(this->str, str);
+	strcpy_s(this->str, str);
 }
 
 inline void MENU :: displayNormal(){
