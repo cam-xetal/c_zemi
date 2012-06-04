@@ -191,6 +191,7 @@ void MANAGIMENT :: battleModeC(){
 	delete e;
 }
 
+bool netFlag = false;
 void MANAGIMENT :: battleModeH(){
 	int ModelHandle;
 	//°“Ç‚İ‚İ
@@ -217,7 +218,24 @@ void MANAGIMENT :: battleModeH(){
 	NET_TRANS* net;
 	net = new NET_TRANS(src_ip, src_port, sin_ip, sin_port);
 	net->setBind();
+	
 
+	hTh = (HANDLE)_beginthreadex(NULL, 0, &thread_recv, net, 0, &thID);
+	ResumeThread(hTh);
+	net->flag1 = false;
+	net->flag2 = false;
+	while(1){
+		if(!net->flag2)
+			net->send("start");
+		if(net->flag1)
+			net->send("ok");
+		if(net->flag1 && net->flag2)
+			break;
+		if(ProcessMessage() != 0 || CheckHitKey(KEY_INPUT_ESCAPE) != 0)
+			return;
+	}
+	TerminateThread(hTh, 0);
+	
 	//ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
 	PLAYER* p;
 	ENEMY_NET* e;
@@ -274,5 +292,3 @@ void MANAGIMENT :: battleModeH(){
 	delete p;
 	delete e;
 }
-
-

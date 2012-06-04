@@ -9,6 +9,8 @@
 class NET_TRANS : public NET_UDP{
 private:
 public:
+	bool flag1;
+	bool flag2;
 	NET_TRANS(char* src_ip, int src_port, char* sin_ip, int sin_port) : NET_UDP(src_ip, src_port, sin_ip, sin_port){}
 	
 	void sendData(float x, float y, float z, float rotateX, float rotateY, float rotateZ, bool shot, int hp){

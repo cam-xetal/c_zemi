@@ -106,9 +106,12 @@ inline int SHOT :: collisionModel(int ModelHandle){
 		result = MV1CollCheck_Sphere(ModelHandle, 39, tmp->getPos(), tmp->getRadius());
 		if(result.HitNum > 0){
 			count++;
-			if(!s.deleteNode())
+			if(!s.deleteNode()){
+				MV1CollResultPolyDimTerminate(result);
 				break;
+			}
 		}
+		MV1CollResultPolyDimTerminate(result);
 	}
 	/*
 	for(int i=0;i<MAX_SHOT;i++){
@@ -134,9 +137,12 @@ inline int SHOT :: collisionTarget(int ModelHandle){
 		result = MV1CollCheck_Sphere(ModelHandle, -1, tmp->getPos(), tmp->getRadius());
 		if(result.HitNum > 0){
 			count++;
-			if(!s.deleteNode())
+			if(!s.deleteNode()){
+				MV1CollResultPolyDimTerminate(result);
 				break;
+			}
 		}
+		MV1CollResultPolyDimTerminate(result);
 	}
 	/*
 	for(int i=0;i<MAX_SHOT;i++){

@@ -1,5 +1,3 @@
-#ifndef MODEL_B
-
 #include "model.h"
 
 void MODEL :: display(){
@@ -102,4 +100,3 @@ int MODEL :: shot(){
 	count++;
 	return 0;
 }
-#endif
