@@ -1,7 +1,8 @@
 #include "DxLib.h"
 #include "managiment.h"
 #include "player.h"
-#include "enemy.h"
+//#include "enemy.h"
+#include "enemy_net.h"
 #include "target.h"
 
 //FPS表示関数
@@ -169,6 +170,107 @@ void MANAGIMENT :: battleModeC(){
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
+	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
+		// 画面をクリア
+		ClearDrawScreen();
+		//床の描画
+		MV1DrawModel(ModelHandle);
+		//FPSの表示
+		fpsDisplay();
+		p->addCR(0.01f);
+		p->display();
+		e->display();
+		//裏画面の内容を表画面に反映
+		ScreenFlip();
+	}
+		
+	MV1DeleteModel(ModelHandle);
+	delete mShot;
+	delete eShot;
+	delete p;
+	delete e;
+}
+
+bool netFlag = false;
+void MANAGIMENT :: battleModeH(){
+	int ModelHandle;
+	//床読み込み
+	ModelHandle = MV1LoadModel("model\\floor\\floor.mqo");
+	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
+	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
+
+	//弾の配列の確保
+	SHOT* mShot;
+	SHOT* eShot;
+	mShot = new SHOT(GetColor(255, 255, 0));
+	eShot = new SHOT(GetColor(255, 0, 0));
+
+	
+	READ_INIT* read;
+	read = new READ_INIT();
+	char src_ip[32];
+	int src_port;
+	char sin_ip[32];
+	int sin_port;
+	read->read(src_ip, &src_port, sin_ip, &sin_port);
+	delete read;
+	
+	NET_TRANS* net;
+	net = new NET_TRANS(src_ip, src_port, sin_ip, sin_port);
+	net->setBind();
+	
+
+	hTh = (HANDLE)_beginthreadex(NULL, 0, &thread_recv, net, 0, &thID);
+	ResumeThread(hTh);
+	net->flag1 = false;
+	net->flag2 = false;
+	while(1){
+		if(!net->flag2)
+			net->send("start");
+		if(net->flag1)
+			net->send("ok");
+		if(net->flag1 && net->flag2)
+			break;
+		if(ProcessMessage() != 0 || CheckHitKey(KEY_INPUT_ESCAPE) != 0)
+			return;
+	}
+	TerminateThread(hTh, 0);
+	
+	//モデルの読み込み
+	PLAYER* p;
+	ENEMY_NET* e;
+	p = new PLAYER(VGet(0, 0, 4000.0), 0.0f, mShot, net);
+	e = new ENEMY_NET(VGet(0, 0, -4000), PI, eShot, net);
+	e->start(e);
+
+	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
+		// 画面をクリア
+		ClearDrawScreen();
+		//ここから
+		//床の描画
+		MV1DrawModel(ModelHandle);
+		//FPSの表示
+		fpsDisplay();
+		//モデルの操作,描画
+		//プレイヤー
+		p->control();
+		p->display();
+		p->send();
+		//敵
+		//e->control(/*p->getRotateY(), p->getVector()*/);
+		e->display();
+		
+		if(p->damageCheck(eShot) <= 0)
+			break;
+		if(e->damageCheck(mShot) <= 0)
+			break;
+		mShot->collisionModel(e->getModelHandle());
+		eShot->collisionModel(p->getModelHandle());
+		//ここまで
+		//裏画面の内容を表画面に反映
+		ScreenFlip();
+	}
+	e->stop();
 
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア

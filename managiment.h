@@ -1,22 +1,43 @@
-#include "DxLib.h"
+#include <process.h>
+//#include "DxLib.h"
+#include "net_trans.h"
 #include "menu.h"
 
 class MANAGIMENT{
 private:
 	int mode;
 	MENU menu[5];
+	unsigned int thID;
+	HANDLE hTh;
+
 	void fpsDisplay();
+	static unsigned __stdcall thread_recv(void* param){
+		char str[16];
+		NET_TRANS* net = (NET_TRANS*)param;
+		while(1){
+			net->recv(str);
+			if(strncmp(str, "start", 5) == 0){
+				net->flag1 = true;
+			}
+			if(strncmp(str, "ok", 2) == 0){
+				net->flag1 = true;
+				net->flag2 = true;
+			}
+		}
+		return 0;
+	}
 public:
 	//inline--start
 	MANAGIMENT(void);
 	void init(void);
+	void startTh(NET_TRANS* net);
+	void stopTh();
 	//inline--end
 	int selectMode(void);
 	void selectAction(void);
 	void freeMode();
 	void battleModeC();
-	void battleModeH(){
-	}
+	void battleModeH();
 };
 
 //public--start
@@ -48,4 +69,6 @@ inline void MANAGIMENT :: init(void){
 	SetUseZBuffer3D(TRUE);
 	SetWriteZBuffer3D(TRUE);
 }
+
+
 //public--end

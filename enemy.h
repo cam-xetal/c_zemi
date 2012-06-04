@@ -1,16 +1,20 @@
+#ifndef ENEMY_B
+#define EMEMY_B
+
 #include "DxLib.h"
 #include <stdlib.h>
 #include <time.h>
 #include "model.h"
 
 class ENEMY : public MODEL{
-private:
+protected:
 	bool fFlag;
 	bool bFlag;
 	bool upFlag;
 	bool rRFlag;
 	bool lRFlag;
 	bool vFlag;
+private:
 	//inline--start
 	float getRand();
 	void displayHp();
@@ -24,7 +28,7 @@ public:
 	ENEMY(VECTOR pos, float rotate, SHOT* mS);
 	ENEMY(VECTOR pos, float rotate, char* file, SHOT* mS);
 	void display();
-	void control();
+	void virtual control();
 	void control(VECTOR pV);
 	void control(float rotateY, VECTOR pV);
 	//inline--end
@@ -83,3 +87,5 @@ inline void ENEMY :: control(float rotateY, VECTOR pV){
 	shot();
 }
 //public--end
+
+#endif

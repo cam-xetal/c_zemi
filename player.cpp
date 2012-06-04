@@ -41,8 +41,10 @@ void PLAYER :: control(){
 	//ˆÚ“®
 	move(fFlag, bFlag, upFlag, rRFlag, lRFlag, vFlag);
 	//’e‚Ì”­ŽË
+	sflag = false;
 	if(CheckHitKey(KEY_INPUT_SPACE)){
-		shot();
+		if(shot())
+			sflag = true;
 	}
 
 	//ƒJƒƒ‰ƒAƒ“ƒOƒ‹
@@ -66,4 +68,8 @@ void PLAYER :: control(){
 	cx = x + x0 + 1500*sinf(cRotate);
 	cy = y + y0 + 300.0f;
 	cz = z + z0 + 1500*cosf(cRotate);
+}
+
+void PLAYER :: send(){
+	net->sendData(-this->x, this->y, -this->z, this->rotateX, this->rotateY+PI, this->rotateZ, sflag, hp);
 }

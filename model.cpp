@@ -1,5 +1,3 @@
-#ifndef MODEL_B
-
 #include "model.h"
 
 void MODEL :: display(){
@@ -40,7 +38,7 @@ void MODEL :: move(bool fFlag, bool bFlag, bool upFlag, bool rRFlag, bool lRFlag
 	if(lRFlag){	//¶‰ñ“]
 		rotateY += 0.005f*v;
 		if(rotateY > 2*PI)
-			rotateY += 2*PI;
+			rotateY -= 2*PI;
 		rotateZ += PI/18.0f;
 	}
 	if(rRFlag){	//‰E‰ñ“]
@@ -91,15 +89,14 @@ void MODEL :: move(bool fFlag, bool bFlag, bool upFlag, bool rRFlag, bool lRFlag
 	}
 }
 
-void MODEL :: shot(){
+int MODEL :: shot(){
 	//’e‚Ì”­ŽË
 	if(count > 10){
 		mS->newShot(VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)), 15, rotateY-0.025f, 100.0f);
 		mS->newShot(VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)), 15, rotateY+0.025f, 100.0f);
 		count=0;
-	}else{
-		count++;
+		return 1;
 	}
+	count++;
+	return 0;
 }
-
-#endif
