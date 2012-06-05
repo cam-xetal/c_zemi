@@ -35,11 +35,6 @@ inline void SHOT :: display(){
 	while(s.next()){
 		s.get()->display();
 	}
-	/*for(int i=0;i<MAX_SHOT;i++){
-		if(s[i].getFlag()){
-			s[i].display();
-		}
-	}*/
 }
 
 //à⁄ìÆ
@@ -51,13 +46,6 @@ inline void SHOT :: move(){
 				break;
 		}
 	}
-	/*
-	for(int i=0;i<MAX_SHOT;i++){
-		if(s[i].getFlag()){
-			if(s[i].move())
-				delShot(i);
-		}
-	}*/
 }
 
 //íeÇÃí«â¡
@@ -65,35 +53,18 @@ inline void SHOT :: newShot(VECTOR pos, float radius, float rotate, float v, int
 	if(s.count() > MAX_SHOT)
 		return;
 	s.newNODE(new SPHERE(pos, radius, rotate, v, col));
-	/*for(int i=0;i<MAX_SHOT;i++){
-		if(!s[i].getFlag()){
-			s[i].set(pos, radius, rotate, v, col, true);
-			return;
-		}
-	}*/
 }
 
 inline void SHOT :: newShot(VECTOR pos, float radius, float rotate, float v){
 	if(s.count() > MAX_SHOT)
 		return;
 	s.newNODE(new SPHERE(pos, radius, rotate, v, this->col));
-	/*
-	for(int i=0;i<MAX_SHOT;i++){
-		if(!s[i].getFlag()){
-			s[i].set(pos, radius, rotate, v, this->col, true);
-			return;
-		}
-	}*/
 }
 
 //íeÇÃçÌèú
 inline void SHOT :: delShot(){
 	s.deleteNode();
 }
-/*
-inline void SHOT :: delShot(int index){
-	s[index].setFlag(false);
-}*/
 
 //ìñÇΩÇËîªíË
 inline int SHOT :: collisionModel(int ModelHandle){
@@ -113,16 +84,6 @@ inline int SHOT :: collisionModel(int ModelHandle){
 		}
 		MV1CollResultPolyDimTerminate(result);
 	}
-	/*
-	for(int i=0;i<MAX_SHOT;i++){
-		if(s[i].getFlag()){
-			result = MV1CollCheck_Sphere(ModelHandle, 39, s[i].getPos(), s[i].getRadius());
-			if(result.HitNum >= 1){
-				s[i].setFlag(false);
-				count++;
-			}
-		}
-	}*/
 	return count;
 }
 
@@ -144,16 +105,6 @@ inline int SHOT :: collisionTarget(int ModelHandle){
 		}
 		MV1CollResultPolyDimTerminate(result);
 	}
-	/*
-	for(int i=0;i<MAX_SHOT;i++){
-		if(s[i].getFlag()){
-			result = MV1CollCheck_Sphere(ModelHandle, -1, s[i].getPos(), s[i].getRadius());
-			if(result.HitNum >= 1){
-				s[i].setFlag(false);
-				count++;
-			}
-		}
-	}*/
 	return count;
 }
 //public--end
