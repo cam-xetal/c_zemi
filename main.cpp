@@ -1,5 +1,5 @@
 #include "DxLib.h"
-#include "managiment.h"
+#include "managiment.hpp"
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow ){
 	MANAGIMENT main;

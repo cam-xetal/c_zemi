@@ -1,4 +1,4 @@
-#include "enemy.h"
+#include "enemy.hpp"
 
 void ENEMY :: ai(){
 	if(count < 10)

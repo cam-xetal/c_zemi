@@ -1,5 +1,5 @@
 #include <string.h>
-#include "net_udp.h"
+#include "net_udp.hpp"
 
 NET_UDP ::NET_UDP(){
 	if(WSAStartup(MAKEWORD(2, 0), &wsaData) != 0)

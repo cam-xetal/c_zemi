@@ -1,6 +1,6 @@
 #include "DxLib.h"
-#include "net_trans.h"
-#include "enemy_net.h"
+#include "net_trans.hpp"
+#include "enemy_net.hpp"
 
 ENEMY_NET :: ENEMY_NET(VECTOR pos, float rotate, SHOT* mS, NET_TRANS* net) : ENEMY(pos, rotate, mS){
 	this->net = net;

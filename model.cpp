@@ -1,4 +1,4 @@
-#include "model.h"
+#include "model.hpp"
 
 void MODEL :: display(){
 	playTime += 200.0f;
@@ -92,8 +92,16 @@ void MODEL :: move(bool fFlag, bool bFlag, bool upFlag, bool rRFlag, bool lRFlag
 int MODEL :: shot(){
 	//’e‚Ì”­ŽË
 	if(count > 10){
+		mS->newShots(	VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)),
+						VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)),
+						15,
+						rotateY-0.005f,
+						rotateY+0.005f,
+						85.0f);
+		/*
 		mS->newShot(VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)), 15, rotateY-0.025f, 100.0f);
 		mS->newShot(VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)), 15, rotateY+0.025f, 100.0f);
+		*/
 		count=0;
 		return 1;
 	}

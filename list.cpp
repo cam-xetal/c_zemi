@@ -1,21 +1,27 @@
-#include "list.h"
+#include "list.hpp"
 
 LIST :: LIST(){
 	head = new NODE();
 	tail = new NODE();
 	head->setNext(tail);
 	tail->setPre(head);
-	//p = head->getNext();
+}
+
+LIST :: ~LIST(){
+	p=head->getNext();
+	while(this->deleteNode());
+	delete head;
+	delete tail;
 }
 
 void LIST :: newNODE(SPHERE* data){
 	NODE* newNode;
 	newNode = new NODE(data);
-	p = head;
-	while(this->next());
+	p = tail->getPre();
 	p->setNext(newNode);
 	newNode->setNext(tail);
 	newNode->setPre(p);
+	tail->setPre(newNode);
 }
 
 bool LIST :: deleteNode(){
@@ -27,8 +33,6 @@ bool LIST :: deleteNode(){
 	tmp->getPre()->setNext(p);
 	p->setPre(tmp->getPre());
 	delete tmp;
-	
-	if(p == tail)
-		return false;
+
 	return true;
 }

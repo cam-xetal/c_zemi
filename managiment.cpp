@@ -1,9 +1,8 @@
 #include "DxLib.h"
-#include "managiment.h"
-#include "player.h"
-//#include "enemy.h"
-#include "enemy_net.h"
-#include "target.h"
+#include "managiment.hpp"
+#include "player.hpp"
+#include "enemy_net.hpp"
+#include "target.hpp"
 
 //FPS表示関数
 void MANAGIMENT :: fpsDisplay(){
@@ -270,9 +269,9 @@ void MANAGIMENT :: battleModeH(){
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
-	e->stop();
 
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
+		p->send();
 		// 画面をクリア
 		ClearDrawScreen();
 		//床の描画
@@ -285,6 +284,7 @@ void MANAGIMENT :: battleModeH(){
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
+	e->stop();
 		
 	MV1DeleteModel(ModelHandle);
 	delete mShot;
