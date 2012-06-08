@@ -5,6 +5,7 @@
 
 class ENEMY_NET : public ENEMY{
 private:
+	CRITICAL_SECTION cs;
 	int port;
 	char ip[16];
 	NET_TRANS* net;
@@ -14,8 +15,11 @@ private:
 	void control(){
 		bool shot;
 		net->recvData(&this->x, &this->y, &this->z, &this->rotateX, &this->rotateY, &this->rotateZ, &shot, &hp);
-		if(shot)
+		if(shot){
+			EnterCriticalSection(&cs);
 			this->shot();
+			LeaveCriticalSection(&cs);
+		}
 	}
 	static unsigned __stdcall thread(void* param){
 		ENEMY_NET* en = (ENEMY_NET*)param;
@@ -25,8 +29,8 @@ private:
 	}
 	int shot(){
 		//’e‚Ì”­ŽË
-		mS->newShot(VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)), 15, rotateY-0.025f, 100.0f);
-		mS->newShot(VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)), 15, rotateY+0.025f, 100.0f);
+		mS->newShot(VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)), 15, rotateY-0.025f, 85.0f);
+		mS->newShot(VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)), 15, rotateY+0.025f, 85.0f);
 		return 0;
 	}
 	//inline--end
@@ -35,4 +39,10 @@ public:
 	~ENEMY_NET();
 	void start(ENEMY_NET* en);
 	void stop();
+	void enterCritical(){
+		EnterCriticalSection(&cs);
+	}
+	void leaveCritical(){
+		LeaveCriticalSection(&cs);
+	}
 };

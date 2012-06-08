@@ -257,14 +257,16 @@ void MANAGIMENT :: battleModeH(){
 		p->send();
 		//“G
 		//e->control(/*p->getRotateY(), p->getVector()*/);
+		e->enterCritical();
 		e->display();
-		
+				
 		if(p->damageCheck(eShot) <= 0)
 			break;
 		if(e->damageCheck(mShot) <= 0)
 			break;
 		mShot->collisionModel(e->getModelHandle());
 		eShot->collisionModel(p->getModelHandle());
+		e->leaveCritical();
 		//‚±‚±‚Ü‚Å
 		//— ‰æ–Ê‚Ì“à—e‚ð•\‰æ–Ê‚É”½‰f
 		ScreenFlip();
@@ -278,9 +280,11 @@ void MANAGIMENT :: battleModeH(){
 		MV1DrawModel(ModelHandle);
 		//FPS‚Ì•\Ž¦
 		fpsDisplay();
+		e->enterCritical();
 		p->addCR(0.01f);
 		p->display();
 		e->display();
+		e->leaveCritical();
 		//— ‰æ–Ê‚Ì“à—e‚ð•\‰æ–Ê‚É”½‰f
 		ScreenFlip();
 	}

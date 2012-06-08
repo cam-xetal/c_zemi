@@ -4,9 +4,11 @@
 
 ENEMY_NET :: ENEMY_NET(VECTOR pos, float rotate, SHOT* mS, NET_TRANS* net) : ENEMY(pos, rotate, mS){
 	this->net = net;
+	InitializeCriticalSection(&cs);
 }
 
 ENEMY_NET :: ~ENEMY_NET(){
+	DeleteCriticalSection(&cs);
 	delete net;
 }
 void ENEMY_NET :: start(ENEMY_NET* en){

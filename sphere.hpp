@@ -40,12 +40,6 @@ public:
 	void setV(float v);
 	//速度取得
 	void getV(float* v);
-	/*
-	//描画フラグ設定
-	void setFlag(bool flag);
-	//描画フラグ取得
-	bool getFlag();
-	*/
 	//表示
 	void display(void);
 	//移動
@@ -72,7 +66,6 @@ inline void SPHERE :: set(VECTOR pos, float radius, float rotate, float v, int c
 	setRotate(rotate);
 	setV(v);
 	setColor(col);
-	//setFlag(dflag);
 }
 
 //位置設定
@@ -132,17 +125,6 @@ inline void SPHERE :: setV(float v){
 inline void SPHERE :: getV(float* v){
 	*v = this->v;
 }
-
-/*
-//描画フラグ設定
-inline void SPHERE :: setFlag(bool flag){
-	this->dflag = flag;
-}
-
-//描画フラグ取得
-inline bool SPHERE :: getFlag(){
-	return this->dflag;
-}*/
 
 //表示
 inline void SPHERE :: display(void){
