@@ -1,4 +1,5 @@
 *.lib
+Log.txt
 .*
 *.vcxproj*
 Debug/*
