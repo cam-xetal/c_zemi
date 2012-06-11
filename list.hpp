@@ -6,7 +6,6 @@ private:
 	NODE* head;
 	NODE* tail;
 	NODE* p;
-
 public:
 	LIST();
 	~LIST();

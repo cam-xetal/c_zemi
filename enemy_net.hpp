@@ -14,12 +14,12 @@ private:
 	//inline--start
 	void control(){
 		bool shot;
+		EnterCriticalSection(&cs);
 		net->recvData(&this->x, &this->y, &this->z, &this->rotateX, &this->rotateY, &this->rotateZ, &shot, &hp);
 		if(shot){
-			EnterCriticalSection(&cs);
 			this->shot();
-			LeaveCriticalSection(&cs);
 		}
+		LeaveCriticalSection(&cs);
 	}
 	static unsigned __stdcall thread(void* param){
 		ENEMY_NET* en = (ENEMY_NET*)param;

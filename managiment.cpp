@@ -169,20 +169,33 @@ void MANAGIMENT :: battleModeC(){
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
+	int pH;
+	int eH;
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
 		ClearDrawScreen();
 		//床の描画
 		MV1DrawModel(ModelHandle);
 		//FPSの表示
+		SetFontSize(16);
 		fpsDisplay();
 		p->addCR(0.01f);
 		p->display();
 		e->display();
+		SetFontSize(32);
+		pH = p->getHp();
+		eH = e->getHp();
+		if(pH == eH)
+			DrawFormatString(300, 350, GetColor(255, 255, 255), "Draw");
+		else if(pH > eH) 
+			DrawFormatString(310, 350, GetColor(255, 255, 255), "Win");
+		else
+			DrawFormatString(300, 350, GetColor(255, 255, 255), "Loss");
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
-		
+	SetFontSize(16);
+
 	MV1DeleteModel(ModelHandle);
 	delete mShot;
 	delete eShot;
@@ -190,7 +203,6 @@ void MANAGIMENT :: battleModeC(){
 	delete e;
 }
 
-bool netFlag = false;
 void MANAGIMENT :: battleModeH(){
 	int ModelHandle;
 	//床読み込み
@@ -224,14 +236,22 @@ void MANAGIMENT :: battleModeH(){
 	net->flag1 = false;
 	net->flag2 = false;
 	while(1){
+		DrawFormatString(20, 20, GetColor(0, 0, 0), "通信中");
 		if(!net->flag2)
 			net->send("start");
 		if(net->flag1)
 			net->send("ok");
 		if(net->flag1 && net->flag2)
 			break;
-		if(ProcessMessage() != 0 || CheckHitKey(KEY_INPUT_ESCAPE) != 0)
+		if(ProcessMessage() != 0 || CheckHitKey(KEY_INPUT_ESCAPE) != 0){
+			TerminateThread(hTh, 0);
+			delete net;
+			delete mShot;
+			delete eShot;
+			MV1DeleteModel(ModelHandle);
 			return;
+		}
+		ScreenFlip();
 	}
 	TerminateThread(hTh, 0);
 	
@@ -242,10 +262,12 @@ void MANAGIMENT :: battleModeH(){
 	e = new ENEMY_NET(VGet(0, 0, -4000), PI, eShot, net);
 	e->start(e);
 
+	int pH;
+	int eH;
+
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
 		ClearDrawScreen();
-		//ここから
 		//床の描画
 		MV1DrawModel(ModelHandle);
 		//FPSの表示
@@ -256,22 +278,22 @@ void MANAGIMENT :: battleModeH(){
 		p->display();
 		p->send();
 		//敵
-		//e->control(/*p->getRotateY(), p->getVector()*/);
 		e->enterCritical();
 		e->display();
-				
-		if(p->damageCheck(eShot) <= 0)
+		pH = p->damageCheck(eShot);
+		eH = e->damageCheck(mShot);
+		if(pH <= 0 || eH <= 0){
+			e->leaveCritical();
 			break;
-		if(e->damageCheck(mShot) <= 0)
-			break;
+		}
 		mShot->collisionModel(e->getModelHandle());
 		eShot->collisionModel(p->getModelHandle());
 		e->leaveCritical();
-		//ここまで
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
-
+	
+	
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		p->send();
 		// 画面をクリア
@@ -279,17 +301,30 @@ void MANAGIMENT :: battleModeH(){
 		//床の描画
 		MV1DrawModel(ModelHandle);
 		//FPSの表示
+		SetFontSize(16);
 		fpsDisplay();
-		e->enterCritical();
 		p->addCR(0.01f);
 		p->display();
 		e->display();
-		e->leaveCritical();
+
+		SetFontSize(32);
+		pH = p->getHp();
+		eH = e->getHp();
+		if(pH == eH)
+			DrawFormatString(300, 350, GetColor(255, 255, 255), "Draw");
+		else if(pH > eH) 
+			DrawFormatString(310, 350, GetColor(255, 255, 255), "Win");
+		else
+			DrawFormatString(300, 350, GetColor(255, 255, 255), "Loss");
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
 	e->stop();
-		
+	SetFontSize(16);
+	
+	
+	//delete net;
+
 	MV1DeleteModel(ModelHandle);
 	delete mShot;
 	delete eShot;

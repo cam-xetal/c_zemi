@@ -7,6 +7,7 @@ private:
 public:
 	//inline--start
 	SHOT(int col);
+	~SHOT(){}
 	//•\Ž¦
 	void display();
 	//ˆÚ“®

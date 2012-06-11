@@ -31,6 +31,7 @@ public:
 	~MODEL();
 	VECTOR getVector();
 	float getRotateY();
+	int getHp();
 	int getModelHandle();
 	int damageCheck(SHOT* oS);
 	//inline--end
@@ -100,6 +101,10 @@ inline VECTOR MODEL :: getVector(){
 
 inline float MODEL :: getRotateY(){
 	return rotateY;
+}
+
+inline int MODEL :: getHp(){
+	return this->hp;
 }
 
 inline int MODEL :: getModelHandle(){
