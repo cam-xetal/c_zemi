@@ -156,7 +156,8 @@ void MANAGIMENT :: battleModeC(){
 		p->control();
 		p->display();
 		//“G
-		e->control(p->getRotateY(), p->getVector());
+		VECTOR rotateP = p->getRotate();
+		e->control(rotateP.y, p->getVector());
 		e->display();
 		
 		if(p->damageCheck(eShot) <= 0)
@@ -323,7 +324,7 @@ void MANAGIMENT :: battleModeH(){
 	SetFontSize(16);
 	
 	
-	//delete net;
+	delete net;
 
 	MV1DeleteModel(ModelHandle);
 	delete mShot;

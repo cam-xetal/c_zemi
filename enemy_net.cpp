@@ -9,7 +9,6 @@ ENEMY_NET :: ENEMY_NET(VECTOR pos, float rotate, SHOT* mS, NET_TRANS* net) : ENE
 
 ENEMY_NET :: ~ENEMY_NET(){
 	DeleteCriticalSection(&cs);
-	delete net;
 }
 void ENEMY_NET :: start(ENEMY_NET* en){
 	hTh = (HANDLE)_beginthreadex(NULL, 0, &thread, en, 0, &thID);

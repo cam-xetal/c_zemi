@@ -13,7 +13,7 @@ public:
 	//ˆÚ“®
 	void move();
 	//’e‚Ì’Ç‰Á
-	void newShot(VECTOR pos, float radius, float rotate, float v, int col);
+	//void newShot(VECTOR pos, float radius, float rotate, float v, int col);
 	void newShot(VECTOR pos, float radius, float rotate, float v);
 	void newShots(VECTOR pos1, VECTOR pos2, float radius, float rotate1, float rotate2, float v);
 	//’e‚Ìíœ
@@ -50,23 +50,24 @@ inline void SHOT :: move(){
 }
 
 //’e‚Ì’Ç‰Á
+/*
 inline void SHOT :: newShot(VECTOR pos, float radius, float rotate, float v, int col){
 	if(s.count() >= MAX_SHOT)
 		return;
 	s.newNODE(new SPHERE(pos, radius, rotate, v, col));
-}
+}*/
 
 inline void SHOT :: newShot(VECTOR pos, float radius, float rotate, float v){
 	if(s.count() >= MAX_SHOT)
 		return;
-	s.newNODE(new SPHERE(pos, radius, rotate, v, this->col));
+	s.newNODE(new SPHERE(pos, radius, VGet(0, rotate, 0), v, this->col));
 }
 
 inline void SHOT :: newShots(VECTOR pos1, VECTOR pos2, float radius, float rotate1, float rotate2, float v){
 	if(s.count() >= MAX_SHOT-1)
 		return;
-	s.newNODE(new SPHERE(pos1, radius, rotate1, v, this->col));
-	s.newNODE(new SPHERE(pos2, radius, rotate2, v, this->col));
+	s.newNODE(new SPHERE(pos1, radius, VGet(0, rotate1, 0), v, this->col));
+	s.newNODE(new SPHERE(pos2, radius, VGet(0, rotate2, 0), v, this->col));
 }
 
 

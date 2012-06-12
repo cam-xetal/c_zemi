@@ -22,15 +22,15 @@ protected:
 	int count;
 	//inline--start
 	void virtual init(void);
-	void virtual displayHp();
+	void virtual displayHp(void);
 	//inline--end
 public:
 	//inline--start
 	MODEL(SHOT* mS, float rotateY);
-	MODEL(char* file, SHOT* mS, float rotateY);
+	//MODEL(char* file, SHOT* mS, float rotateY);
 	~MODEL();
 	VECTOR getVector();
-	float getRotateY();
+	VECTOR getRotate();
 	int getHp();
 	int getModelHandle();
 	int damageCheck(SHOT* oS);
@@ -78,16 +78,19 @@ inline MODEL :: MODEL(SHOT* mS, float rotateY){
 	this->rotateY = rotateY;
 }
 
+/*
 inline MODEL :: MODEL(char* file, SHOT* mS, float rotateY){
 	init();
 	ModelHandle = MV1LoadModel(file);
 	this->mS = mS;
 	this->rotateY = rotateY;
 }
+*/
 inline MODEL :: ~MODEL(){
 	MV1TerminateCollInfo(ModelHandle, 39);
 	MV1DeleteModel(ModelHandle);
 }
+
 
 inline VECTOR MODEL :: getVector(){
 	VECTOR tmp = VSub(VGet(x, y, z), VGet(preX, preY, preZ));
@@ -99,8 +102,8 @@ inline VECTOR MODEL :: getVector(){
 	return VSub(VGet(x, y, z), VGet(preX, preY, preZ));
 }
 
-inline float MODEL :: getRotateY(){
-	return rotateY;
+inline VECTOR MODEL :: getRotate(){
+	return VGet(rotateX, rotateY, rotateY);
 }
 
 inline int MODEL :: getHp(){

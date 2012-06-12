@@ -51,25 +51,25 @@ void MODEL :: move(bool fFlag, bool bFlag, bool upFlag, bool rRFlag, bool lRFlag
 	if(fFlag){	//‘OˆÚ“®
 		x -= v*10.0f * sinf(rotateY);
 		if(x > MAX_X)
-			x=MAX_X;
+			x = MAX_X;
 		else if(x < MIN_X)
-			x=MIN_X;
+			x = MIN_X;
 		z -= v*10.0f * cosf(rotateY);
 		if(z > MAX_Z)
-			z=MAX_Z;
+			z = MAX_Z;
 		else if(z < MIN_Z)
-			z=MIN_X;
+			z = MIN_X;
 		rotateX -= PI/18.0f;
 	}
 	if(bFlag){	//Œã‚ëˆÚ“®
 		x += v*7.5f * sinf(rotateY);
 		if(x > MAX_X)
-			x=MAX_X;
+			x = MAX_X;
 		else if(x < MIN_X)
-			x=MIN_X;
+			x = MIN_X;
 		z += v*7.5f * cosf(rotateY);
 		if(z > MAX_Z)
-			z=MAX_Z;
+			z = MAX_Z;
 		else if(z < MIN_Z)
 			z=MIN_X;
 		rotateX += PI/18.0f;

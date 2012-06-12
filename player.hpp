@@ -5,7 +5,7 @@
 class PLAYER : public MODEL{
 private:
 	bool sflag;
-	int col;
+	//int col;
 	float cx, cy, cz;
 	float cRotate;
 	NET_TRANS* net;
@@ -18,7 +18,7 @@ public:
 	//inline--start
 	PLAYER(VECTOR pos, float rotate, SHOT* mS);
 	PLAYER(VECTOR pos, float rotate, SHOT* mS, NET_TRANS* net);
-	PLAYER(VECTOR pos, float rotate, char* file, SHOT* mS);
+	//PLAYER(VECTOR pos, float rotate, char* file, SHOT* mS);
 	void addCR(float cr);
 	//inline--end
 	void display();
@@ -63,12 +63,13 @@ inline PLAYER :: PLAYER(VECTOR pos, float rotate, SHOT* mS, NET_TRANS* net) : MO
 	this->net = net;
 }
 
+/*
 inline PLAYER :: PLAYER(VECTOR pos, float rotate, char* file, SHOT* mS) : MODEL(file, mS, rotate){
 	init();
 	this->x = pos.x;
 	this->y = pos.y;
 	this->z = pos.z;
-}
+}*/
 
 inline void PLAYER :: addCR(float cr){
 	cRotate += cr;
