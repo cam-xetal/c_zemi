@@ -16,6 +16,7 @@ protected:
 	float ppX, ppY, ppZ;
 	float x0, y0, z0;
 	float rotateX, rotateY, rotateZ;
+	float preRX, preRY, preRZ;
 	float v;
 	SHOT* mS;
 	int hp;
@@ -34,12 +35,27 @@ public:
 	int getHp();
 	int getModelHandle();
 	int damageCheck(SHOT* oS);
-	void collision(bool flag){
+	void doNotMove(bool flag){
 		if(!flag)
 			return;
 		this->x = this->preX;
 		this->y = this->preY;
 		this->z = this->preZ;
+		this->rotateX = this->preRX;
+		this->rotateY = this->preRY;
+		this->rotateZ = this->preRZ;
+	}
+	bool collision(VECTOR pos, VECTOR rotate){
+		VECTOR pos1 = VGet(pos.x+600*sinf(rotate.y), pos.y+100.0f+200.0f-500*sinf(rotate.x), pos.z+600*cosf(rotate.y));
+		VECTOR pos2 = VGet(pos.x-200*sinf(rotate.y), pos.y+100.0f+200.0f+500*sinf(rotate.x), pos.z-200*cosf(rotate.y));
+
+		MV1_COLL_RESULT_POLY_DIM  result = MV1CollCheck_Capsule(ModelHandle, 39, pos1, pos2, 210.0f);
+		if(result.HitNum > 0){
+			MV1CollResultPolyDimTerminate(result);
+			return true;
+		}
+		MV1CollResultPolyDimTerminate(result);
+		return false;
 	}
 	//inline--end
 	void virtual display();

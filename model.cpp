@@ -21,6 +21,9 @@ void MODEL :: move(bool fFlag, bool bFlag, bool upFlag, bool rRFlag, bool lRFlag
 	preX = x;
 	preY = y;
 	preZ = z;
+	preRX = rotateX;
+	preRY = rotateY;
+	preRZ = rotateZ;
 	rotateX = 0.0f;
 	rotateZ = 0.0f;
 

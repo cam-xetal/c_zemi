@@ -94,10 +94,7 @@ void MANAGIMENT :: freeMode(){
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 
 	BUILDING buil(VGet(0, 0, 5000.0f));
-	/*ModelHandleBuilding = MV1LoadModel("model\\building\\building.mqo");
-	MV1SetScale(ModelHandleBuilding, VGet(5.0f, 4.0f, 5.0f));
-	MV1SetPosition(ModelHandleBuilding, VGet(0, 0, 0));
-*/
+
 	//弾の配列の確保
 	SHOT* mShot;
 	mShot = new SHOT(GetColor(255, 255, 0), 15.0f, 85.0f);
@@ -111,10 +108,9 @@ void MANAGIMENT :: freeMode(){
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
 		ClearDrawScreen();
-		//ここから
 		//床の描画
 		MV1DrawModel(ModelHandle);
-		//MV1DrawModel(ModelHandleBuilding);
+		
 		buil.display();
 		//FPSの表示
 		fpsDisplay();
@@ -122,15 +118,12 @@ void MANAGIMENT :: freeMode(){
 		p->control();
 		p->display();
 		t.display();
-		/*if(buil.collision(p->getPos(), p->getRotate()))
-			DrawFormatString(300, 350, GetColor(255, 255, 255), "col");
-		*/
-		p->collision(buil.collision(p->getPos(), p->getRotate()));
+		p->doNotMove(buil.collision(p->getPos(), p->getRotate()));
+		p->doNotMove(t.collision(p->getPos(), p->getRotate()));
 		if(mShot->collisionTarget(t.getModelHandle()) > 0){
 			t.delTarget();
 			t.newTarget();
 		}
-		//ここまで
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
@@ -138,6 +131,7 @@ void MANAGIMENT :: freeMode(){
 	delete mShot;
 	delete p;
 }
+
 void MANAGIMENT :: battleModeC(){
 	int ModelHandle;
 	//床読み込み
@@ -162,7 +156,7 @@ void MANAGIMENT :: battleModeC(){
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
 		ClearDrawScreen();
-		//ここから
+
 		//床の描画
 		MV1DrawModel(ModelHandle);
 		//FPSの表示
@@ -175,6 +169,9 @@ void MANAGIMENT :: battleModeC(){
 		VECTOR rotateP = p->getRotate();
 		e->control(rotateP.y, p->getVector());
 		e->display();
+
+		p->doNotMove(p->collision(e->getPos(), e->getRotate()));
+		e->doNotMove(e->collision(p->getPos(), p->getRotate()));
 		
 		pH = p->damageCheck(eShot);
 		eH = e->damageCheck(mShot);
@@ -183,7 +180,6 @@ void MANAGIMENT :: battleModeC(){
 		mShot->collisionModel(e->getModelHandle());
 		eShot->collisionModel(p->getModelHandle());
 		
-		//ここまで
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}

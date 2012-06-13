@@ -2,6 +2,7 @@
 .*
 *~
 *.vcxproj*
+*.vcproj*
 Log.txt
 Debug/*
 dxlib/*
