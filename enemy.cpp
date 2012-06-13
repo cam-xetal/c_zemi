@@ -222,10 +222,10 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 	//¶‰EÝ’è
 	float tmp = rotateY - this->rotateY;
 	if(fabs(cos) > 0.95){
-		if(rand < 0.5){
+		if(rand < 0.2){
 			rRFlag = false;
 			lRFlag = false;
-		}else if(rand >= 0.5 && rand < 0.75){
+		}else if(rand >= 0.2 && rand < 0.75){
 			rRFlag = true;
 			lRFlag = false;
 		}else{
@@ -243,9 +243,12 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 			rRFlag = false;
 			lRFlag = true;
 		}
-	}else{
+	}else if(rand >= 0.05){
 		rRFlag = true;
 		lRFlag = false;
+	}else{
+		rRFlag = false;
+		lRFlag = true;
 	}
 	/*else if(fabs(tmp - 0.03) < fabs(tmp)){
 		rRFlag = true;
@@ -256,8 +259,8 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 	}else{
 		rRFlag = false;
 		lRFlag = false;
-	}*/
-	
+	}
+	*/
 	//‘¬“xÝ’è
 	vFlag = true;
 	/*

@@ -27,13 +27,20 @@ protected:
 public:
 	//inline--start
 	MODEL(SHOT* mS, float rotateY);
-	//MODEL(char* file, SHOT* mS, float rotateY);
 	~MODEL();
+	VECTOR getPos();
 	VECTOR getVector();
 	VECTOR getRotate();
 	int getHp();
 	int getModelHandle();
 	int damageCheck(SHOT* oS);
+	void collision(bool flag){
+		if(!flag)
+			return;
+		this->x = this->preX;
+		this->y = this->preY;
+		this->z = this->preZ;
+	}
 	//inline--end
 	void virtual display();
 	void move(bool fFlag, bool bFlag, bool upFlag, bool rRFlag, bool lRFlag, bool vFlag);
@@ -78,19 +85,14 @@ inline MODEL :: MODEL(SHOT* mS, float rotateY){
 	this->rotateY = rotateY;
 }
 
-/*
-inline MODEL :: MODEL(char* file, SHOT* mS, float rotateY){
-	init();
-	ModelHandle = MV1LoadModel(file);
-	this->mS = mS;
-	this->rotateY = rotateY;
-}
-*/
 inline MODEL :: ~MODEL(){
 	MV1TerminateCollInfo(ModelHandle, 39);
 	MV1DeleteModel(ModelHandle);
 }
 
+inline VECTOR MODEL :: getPos(){
+	return VGet(this->x, this->y, this->z);
+}
 
 inline VECTOR MODEL :: getVector(){
 	VECTOR tmp = VSub(VGet(x, y, z), VGet(preX, preY, preZ));

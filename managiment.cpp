@@ -3,6 +3,7 @@
 #include "player.hpp"
 #include "enemy_net.hpp"
 #include "target.hpp"
+#include "building.h"
 
 //FPS•\Ž¦ŠÖ”
 void MANAGIMENT :: fpsDisplay(){
@@ -86,11 +87,17 @@ void MANAGIMENT :: selectAction(void){
 
 void MANAGIMENT :: freeMode(){
 	int ModelHandle;
+	int ModelHandleBuilding;
 	//°“Ç‚Ýž‚Ý
 	ModelHandle = MV1LoadModel("model\\floor\\floor.mqo");
 	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 
+	BUILDING buil(VGet(0, 0, 5000.0f));
+	/*ModelHandleBuilding = MV1LoadModel("model\\building\\building.mqo");
+	MV1SetScale(ModelHandleBuilding, VGet(5.0f, 4.0f, 5.0f));
+	MV1SetPosition(ModelHandleBuilding, VGet(0, 0, 0));
+*/
 	//’e‚Ì”z—ñ‚ÌŠm•Û
 	SHOT* mShot;
 	mShot = new SHOT(GetColor(255, 255, 0), 15.0f, 85.0f);
@@ -107,12 +114,18 @@ void MANAGIMENT :: freeMode(){
 		//‚±‚±‚©‚ç
 		//°‚Ì•`‰æ
 		MV1DrawModel(ModelHandle);
+		//MV1DrawModel(ModelHandleBuilding);
+		buil.display();
 		//FPS‚Ì•\Ž¦
 		fpsDisplay();
 		//ƒ‚ƒfƒ‹‚Ì‘€ì,•`‰æ
 		p->control();
 		p->display();
 		t.display();
+		/*if(buil.collision(p->getPos(), p->getRotate()))
+			DrawFormatString(300, 350, GetColor(255, 255, 255), "col");
+		*/
+		p->collision(buil.collision(p->getPos(), p->getRotate()));
 		if(mShot->collisionTarget(t.getModelHandle()) > 0){
 			t.delTarget();
 			t.newTarget();
@@ -207,6 +220,12 @@ void MANAGIMENT :: battleModeC(){
 	delete e;
 }
 
+
+
+bool nflag1 = false;
+bool nflag2 = false;
+
+
 void MANAGIMENT :: battleModeH(){
 	int ModelHandle;
 	//°“Ç‚Ýž‚Ý
@@ -237,15 +256,14 @@ void MANAGIMENT :: battleModeH(){
 
 	hTh = (HANDLE)_beginthreadex(NULL, 0, &thread_recv, net, 0, &thID);
 	ResumeThread(hTh);
-	net->flag1 = false;
-	net->flag2 = false;
+
 	while(1){
 		DrawFormatString(20, 20, GetColor(0, 0, 0), "’ÊM’†");
-		if(!net->flag2)
+		if(!nflag2)
 			net->send("start");
-		if(net->flag1)
+		if(nflag1)
 			net->send("ok");
-		if(net->flag1 && net->flag2)
+		if(nflag1 && nflag2)
 			break;
 		if(ProcessMessage() != 0 || CheckHitKey(KEY_INPUT_ESCAPE) != 0){
 			TerminateThread(hTh, 0);
@@ -290,8 +308,6 @@ void MANAGIMENT :: battleModeH(){
 			e->leaveCritical();
 			break;
 		}
-		//mShot->collisionModel(e->getModelHandle());
-		//eShot->collisionModel(p->getModelHandle());
 		e->leaveCritical();
 		//— ‰æ–Ê‚Ì“à—e‚ð•\‰æ–Ê‚É”½‰f
 		ScreenFlip();

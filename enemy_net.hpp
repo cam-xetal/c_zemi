@@ -34,8 +34,6 @@ private:
 						VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)),
 						VGet(0, rotateY-0.0025f, 0),
 						VGet(0, rotateY+0.0025f, 0));
-		//mS->newShot(VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)), VGet(0, rotateY-0.0025f, 0));
-		//mS->newShot(VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)), VGet(0, rotateY+0.0025f, 0));
 		return 0;
 	}
 	//inline--end

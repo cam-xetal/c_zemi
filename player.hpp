@@ -63,14 +63,6 @@ inline PLAYER :: PLAYER(VECTOR pos, float rotate, SHOT* mS, NET_TRANS* net) : MO
 	this->net = net;
 }
 
-/*
-inline PLAYER :: PLAYER(VECTOR pos, float rotate, char* file, SHOT* mS) : MODEL(file, mS, rotate){
-	init();
-	this->x = pos.x;
-	this->y = pos.y;
-	this->z = pos.z;
-}*/
-
 inline void PLAYER :: addCR(float cr){
 	cRotate += cr;
 	if(cRotate > 2*PI)

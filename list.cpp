@@ -32,9 +32,7 @@ bool LIST :: deleteNode(){
 	tmp = p;
 	p = p->getPre();
 	p->setNext(tmp->getNext());
-	//tmp->getPre()->setNext(p);
 	p->getNext()->setPre(p);
-	//p->setPre(tmp->getPre());
 	delete tmp;
 
 	return true;

@@ -1,6 +1,9 @@
 #include "model.hpp"
 
 void MODEL :: display(){
+	DrawCapsule3D(	VGet(x+600*sinf(rotateY), y+y0+200.0f-500*sinf(rotateX), z+600*cosf(rotateY)),
+					VGet(x-200*sinf(rotateY), y+y0+200.0f+500*sinf(rotateX), z-200*cosf(rotateY)),
+					210.0f, 2, GetColor(255,255,255), GetColor(255,255,255), FALSE);
 	playTime += 200.0f;
 	if(playTime >= animTime)
 		playTime = 0.0f;
@@ -78,12 +81,12 @@ void MODEL :: move(bool fFlag, bool bFlag, bool upFlag, bool rRFlag, bool lRFlag
 	//ã¸
 	if(upFlag){
 		y+=10.0f;
-		if(y > 600.0)
-			y=600.0f;
+		if(y > MAX_Y)
+			y=MAX_Y;
 	}else{
 		y-=5.0f;
-		if(y < 0)
-			y=0.0f;
+		if(y < MIN_Y)
+			y=MIN_Y;
 	}
 }
 

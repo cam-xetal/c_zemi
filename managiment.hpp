@@ -16,11 +16,11 @@ private:
 		while(1){
 			net->recv(str);
 			if(strncmp(str, "start", 5) == 0){
-				net->flag1 = true;
+				nflag1 = true;
 			}
 			if(strncmp(str, "ok", 2) == 0){
-				net->flag1 = true;
-				net->flag2 = true;
+				nflag1 = true;
+				nflag2 = true;
 			}
 		}
 		return 0;
