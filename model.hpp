@@ -115,8 +115,12 @@ inline int MODEL :: getModelHandle(){
 }
 
 inline int MODEL :: damageCheck(SHOT* oS){
-	int dcount = oS->collisionModel(ModelHandle);
-	hp -= dcount*5;
+	if(hp > 0){
+		int dcount = oS->collisionModel(ModelHandle);
+		hp -= dcount*5;
+	}else{
+		hp = 0;
+	}
 	return hp;
 }
 //public--end

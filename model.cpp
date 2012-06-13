@@ -92,10 +92,10 @@ int MODEL :: shot(){
 	if(count > 10){
 		mS->newShots(	VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)),
 						VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)),
-						15,
-						rotateY-0.0025f,
-						rotateY+0.0025f,
-						85.0f);
+						//15,
+						VGet(rotateX, rotateY-0.0025f, rotateZ),
+						VGet(rotateX, rotateY+0.0025f, rotateZ));
+						//85.0f);
 		count=0;
 		return 1;
 	}

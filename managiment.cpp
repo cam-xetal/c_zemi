@@ -93,7 +93,7 @@ void MANAGIMENT :: freeMode(){
 
 	//弾の配列の確保
 	SHOT* mShot;
-	mShot = new SHOT(GetColor(255, 255, 0));
+	mShot = new SHOT(GetColor(255, 255, 0), 15.0f, 85.0f);
 	//モデルの読み込み
 	PLAYER* p;
 	p = new PLAYER(VGet(0, 0, 0), 0.0, mShot);
@@ -135,14 +135,17 @@ void MANAGIMENT :: battleModeC(){
 	//弾の配列の確保
 	SHOT* mShot;
 	SHOT* eShot;
-	mShot = new SHOT(GetColor(255, 255, 0));
-	eShot = new SHOT(GetColor(255, 0, 0));
+	mShot = new SHOT(GetColor(255, 255, 0), 15.0f, 85.0f);
+	eShot = new SHOT(GetColor(255, 0, 0), 15.0f, 85.0f);
 	//モデルの読み込み
 	PLAYER* p;
 	ENEMY* e;
 	p = new PLAYER(VGet(0, 0, 4000.0), 0.0f, mShot);
 	e = new ENEMY(VGet(0, 0, -4000), PI, eShot);
 
+
+	int pH;
+	int eH;
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
 		ClearDrawScreen();
@@ -160,18 +163,18 @@ void MANAGIMENT :: battleModeC(){
 		e->control(rotateP.y, p->getVector());
 		e->display();
 		
-		if(p->damageCheck(eShot) <= 0)
-			break;
-		if(e->damageCheck(mShot) <= 0)
+		pH = p->damageCheck(eShot);
+		eH = e->damageCheck(mShot);
+		if(pH <=0 || eH <= 0)
 			break;
 		mShot->collisionModel(e->getModelHandle());
 		eShot->collisionModel(p->getModelHandle());
+		
 		//ここまで
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
-	int pH;
-	int eH;
+	
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
 		ClearDrawScreen();
@@ -214,8 +217,8 @@ void MANAGIMENT :: battleModeH(){
 	//弾の配列の確保
 	SHOT* mShot;
 	SHOT* eShot;
-	mShot = new SHOT(GetColor(255, 255, 0));
-	eShot = new SHOT(GetColor(255, 0, 0));
+	mShot = new SHOT(GetColor(255, 255, 0), 15.0f, 85.0f);
+	eShot = new SHOT(GetColor(255, 0, 0), 15.0f, 85.0f);
 
 	
 	READ_INIT* read;
@@ -282,13 +285,13 @@ void MANAGIMENT :: battleModeH(){
 		e->enterCritical();
 		e->display();
 		pH = p->damageCheck(eShot);
-		eH = e->damageCheck(mShot);
-		if(pH <= 0 || eH <= 0){
+		//eH = e->damageCheck(mShot);
+		if(e->getHp() <= 0 || pH <= 0){
 			e->leaveCritical();
 			break;
 		}
-		mShot->collisionModel(e->getModelHandle());
-		eShot->collisionModel(p->getModelHandle());
+		//mShot->collisionModel(e->getModelHandle());
+		//eShot->collisionModel(p->getModelHandle());
 		e->leaveCritical();
 		//裏画面の内容を表画面に反映
 		ScreenFlip();

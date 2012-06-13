@@ -60,14 +60,25 @@ inline void SPHERE :: display(void){
 //ˆÚ“®
 inline bool SPHERE :: move(void){
 	bool flag=false;
+
 	x -= v * sinf(rotateY);
 	if(x > MAX_X){
-		x=MAX_X;
+		x = MAX_X;
 		flag = true;
 	}else if(x < MIN_X){
-		x=MIN_X;
+		x = MIN_X;
 		flag = true;
 	}
+
+	y += v * sinf(rotateX/2.5f);
+	if(y > MAX_Y){
+		y = MAX_Y;
+		flag = true;
+	}else if(y < 0){
+		y = 0;
+		flag = true;
+	}
+
 	z -= v * cosf(rotateY);
 	if(z > MAX_Z){
 		z=MAX_Z;
@@ -76,6 +87,7 @@ inline bool SPHERE :: move(void){
 		z=MIN_X;
 		flag = true;
 	}
+
 	return flag;
 }
 //public--end

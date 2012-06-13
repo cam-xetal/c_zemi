@@ -169,6 +169,9 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 		return;
 	float rand = getRand();
 	//ëOå„ê›íË
+	fFlag = true;
+	bFlag = false;
+	/*
 	if(fFlag == bFlag){
 		if(rand < 0.9){
 			fFlag = true;
@@ -202,7 +205,7 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 			fFlag = false;
 			bFlag = true;
 		}
-	}
+	}*/
 	//è„â∫ê›íË
 	if(pV.y >= this->y){
 		if(rand < 0.95)
@@ -218,7 +221,7 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 	
 	//ç∂âEê›íË
 	float tmp = rotateY - this->rotateY;
-	if(fabs(cos) < 0.05){
+	if(fabs(cos) > 0.95){
 		if(rand < 0.5){
 			rRFlag = false;
 			lRFlag = false;
@@ -240,7 +243,11 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 			rRFlag = false;
 			lRFlag = true;
 		}
-	}else if(fabs(tmp - 0.03) < fabs(tmp)){
+	}else{
+		rRFlag = true;
+		lRFlag = false;
+	}
+	/*else if(fabs(tmp - 0.03) < fabs(tmp)){
 		rRFlag = true;
 		lRFlag = false;
 	}else if(fabs(tmp + 0.03) < fabs(tmp)){
@@ -249,9 +256,11 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 	}else{
 		rRFlag = false;
 		lRFlag = false;
-	}
+	}*/
 	
 	//ë¨ìxê›íË
+	vFlag = true;
+	/*
 	if(vFlag){
 		if(rand < 0.8)
 			vFlag = true;
@@ -262,5 +271,5 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 			vFlag = true;
 		else
 			vFlag = false;
-	}
+	}*/
 }

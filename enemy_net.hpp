@@ -14,6 +14,7 @@ private:
 	//inline--start
 	void control(){
 		bool shot;
+		
 		EnterCriticalSection(&cs);
 		net->recvData(&this->x, &this->y, &this->z, &this->rotateX, &this->rotateY, &this->rotateZ, &shot, &hp);
 		if(shot){
@@ -29,8 +30,12 @@ private:
 	}
 	int shot(){
 		//’e‚Ì”­ŽË
-		mS->newShot(VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)), 15, rotateY-0.025f, 85.0f);
-		mS->newShot(VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)), 15, rotateY+0.025f, 85.0f);
+		mS->newShots(	VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)),
+						VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)),
+						VGet(0, rotateY-0.0025f, 0),
+						VGet(0, rotateY+0.0025f, 0));
+		//mS->newShot(VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)), VGet(0, rotateY-0.0025f, 0));
+		//mS->newShot(VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)), VGet(0, rotateY+0.0025f, 0));
 		return 0;
 	}
 	//inline--end

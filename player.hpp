@@ -38,7 +38,7 @@ inline void PLAYER :: init(void){
 
 inline void PLAYER :: displayXYZ(void){
 	int col = GetColor(255, 255, 255);
-	DrawFormatString(10, 10, col, "x:%.1f, y:%.1f, z:%.1f", x, y, z);
+	DrawFormatString(10, 10, col, "x:%.1f, y:%.1f, z:%.1f", x-x0*sinf(rotateY), y+y0, z-z0*cosf(rotateY));
 }
 
 inline void PLAYER :: displayV(void){
