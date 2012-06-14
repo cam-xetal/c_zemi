@@ -1,5 +1,6 @@
 #include <WinSock2.h>
 #include <stdio.h>
+#include <string.h>
 
 
 class NET_UDP{

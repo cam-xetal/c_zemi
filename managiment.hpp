@@ -1,6 +1,12 @@
 #include <process.h>
-#include "net_trans.hpp"
 #include "menu.hpp"
+#include "player.hpp"
+#include "enemy_net.hpp"
+#include "target.hpp"
+#include "building.hpp"
+#include "read_init.hpp"
+#include "net_trans.hpp"
+
 
 class MANAGIMENT{
 private:

@@ -1,4 +1,3 @@
-#include <string.h>
 #include "net_udp.hpp"
 
 NET_UDP ::NET_UDP(){

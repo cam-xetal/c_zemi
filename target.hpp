@@ -67,7 +67,7 @@ inline int TARGET :: getModelHandle(){
 	return ModelHandle;
 }
 
-bool TARGET :: collision(VECTOR pos, VECTOR rotate){
+inline bool TARGET :: collision(VECTOR pos, VECTOR rotate){
 	VECTOR pos1 = VGet(pos.x+600*sinf(rotate.y), pos.y+100.0f+200.0f-500*sinf(rotate.x), pos.z+600*cosf(rotate.y));
 	VECTOR pos2 = VGet(pos.x-200*sinf(rotate.y), pos.y+100.0f+200.0f+500*sinf(rotate.x), pos.z-200*cosf(rotate.y));
 

@@ -1,6 +1,6 @@
 #include <process.h>
 #include "enemy.hpp"
-//#include "read_init.hpp"
+#include "DxLib.h"
 #include "net_trans.hpp"
 
 class ENEMY_NET : public ENEMY{
