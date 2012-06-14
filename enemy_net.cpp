@@ -14,4 +14,5 @@ void ENEMY_NET :: start(ENEMY_NET* en){
 }
 void ENEMY_NET :: stop(){
 	TerminateThread(hTh, 0);
+	CloseHandle(hTh);
 }

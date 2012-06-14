@@ -279,6 +279,7 @@ void MANAGIMENT :: battleModeH(){
 		ScreenFlip();
 	}
 	TerminateThread(hTh, 0);
+	CloseHandle(hTh);
 	
 	//ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
 	PLAYER* p;
