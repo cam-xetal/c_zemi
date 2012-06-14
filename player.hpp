@@ -5,7 +5,7 @@
 class PLAYER : public MODEL{
 private:
 	bool sflag;
-	int col;
+	//int col;
 	float cx, cy, cz;
 	float cRotate;
 	NET_TRANS* net;
@@ -18,7 +18,6 @@ public:
 	//inline--start
 	PLAYER(VECTOR pos, float rotate, SHOT* mS);
 	PLAYER(VECTOR pos, float rotate, SHOT* mS, NET_TRANS* net);
-	PLAYER(VECTOR pos, float rotate, char* file, SHOT* mS);
 	void addCR(float cr);
 	//inline--end
 	void display();
@@ -38,7 +37,7 @@ inline void PLAYER :: init(void){
 
 inline void PLAYER :: displayXYZ(void){
 	int col = GetColor(255, 255, 255);
-	DrawFormatString(10, 10, col, "x:%.1f, y:%.1f, z:%.1f", x, y, z);
+	DrawFormatString(10, 10, col, "x:%.1f, y:%.1f, z:%.1f", x-x0*sinf(rotateY), y+y0, z-z0*cosf(rotateY));
 }
 
 inline void PLAYER :: displayV(void){
@@ -61,13 +60,6 @@ inline PLAYER :: PLAYER(VECTOR pos, float rotate, SHOT* mS, NET_TRANS* net) : MO
 	this->y = pos.y;
 	this->z = pos.z;
 	this->net = net;
-}
-
-inline PLAYER :: PLAYER(VECTOR pos, float rotate, char* file, SHOT* mS) : MODEL(file, mS, rotate){
-	init();
-	this->x = pos.x;
-	this->y = pos.y;
-	this->z = pos.z;
 }
 
 inline void PLAYER :: addCR(float cr){

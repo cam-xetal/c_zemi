@@ -8,8 +8,9 @@ LIST :: LIST(){
 }
 
 LIST :: ~LIST(){
-	p=head->getNext();
-	while(this->deleteNode());
+	p=head;
+	while(this->next())
+		this->deleteNode();
 	delete head;
 	delete tail;
 }
@@ -29,9 +30,9 @@ bool LIST :: deleteNode(){
 	if(p == head || p == tail)
 		return false;
 	tmp = p;
-	p = p->getNext();
-	tmp->getPre()->setNext(p);
-	p->setPre(tmp->getPre());
+	p = p->getPre();
+	p->setNext(tmp->getNext());
+	p->getNext()->setPre(p);
 	delete tmp;
 
 	return true;

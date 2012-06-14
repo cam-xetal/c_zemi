@@ -16,11 +16,11 @@ private:
 		while(1){
 			net->recv(str);
 			if(strncmp(str, "start", 5) == 0){
-				net->flag1 = true;
+				nflag1 = true;
 			}
 			if(strncmp(str, "ok", 2) == 0){
-				net->flag1 = true;
-				net->flag2 = true;
+				nflag1 = true;
+				nflag2 = true;
 			}
 		}
 		return 0;
@@ -63,7 +63,6 @@ inline void MANAGIMENT :: init(void){
 	//ライト指定
 	ChangeLightTypeDir(VGet(1.0, -1.0, 0.0));
 	CreateDirLightHandle(VGet(-1.0, 1, 0));
-	//Zバッファ設定
 	//Zバッファ使用
 	SetUseZBuffer3D(TRUE);
 	SetWriteZBuffer3D(TRUE);

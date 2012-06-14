@@ -16,24 +16,28 @@ protected:
 	float ppX, ppY, ppZ;
 	float x0, y0, z0;
 	float rotateX, rotateY, rotateZ;
+	float preRX, preRY, preRZ;
 	float v;
 	SHOT* mS;
 	int hp;
 	int count;
+	bool cflag;
 	//inline--start
 	void virtual init(void);
-	void virtual displayHp();
+	void virtual displayHp(void);
 	//inline--end
 public:
 	//inline--start
 	MODEL(SHOT* mS, float rotateY);
-	MODEL(char* file, SHOT* mS, float rotateY);
 	~MODEL();
+	VECTOR getPos();
 	VECTOR getVector();
-	float getRotateY();
+	VECTOR getRotate();
 	int getHp();
 	int getModelHandle();
 	int damageCheck(SHOT* oS);
+	void doNotMove(bool flag);
+	bool collision(VECTOR pos, VECTOR rotate);
 	//inline--end
 	void virtual display();
 	void move(bool fFlag, bool bFlag, bool upFlag, bool rRFlag, bool lRFlag, bool vFlag);
@@ -55,6 +59,7 @@ inline void MODEL :: init(void){
 	rotateX = rotateY = rotateZ = 0;
 	v = 0;
 	count = 0;
+	cflag = false;
 }
 
 inline void MODEL :: displayHp(){
@@ -78,15 +83,13 @@ inline MODEL :: MODEL(SHOT* mS, float rotateY){
 	this->rotateY = rotateY;
 }
 
-inline MODEL :: MODEL(char* file, SHOT* mS, float rotateY){
-	init();
-	ModelHandle = MV1LoadModel(file);
-	this->mS = mS;
-	this->rotateY = rotateY;
-}
 inline MODEL :: ~MODEL(){
 	MV1TerminateCollInfo(ModelHandle, 39);
 	MV1DeleteModel(ModelHandle);
+}
+
+inline VECTOR MODEL :: getPos(){
+	return VGet(this->x, this->y, this->z);
 }
 
 inline VECTOR MODEL :: getVector(){
@@ -99,8 +102,8 @@ inline VECTOR MODEL :: getVector(){
 	return VSub(VGet(x, y, z), VGet(preX, preY, preZ));
 }
 
-inline float MODEL :: getRotateY(){
-	return rotateY;
+inline VECTOR MODEL :: getRotate(){
+	return VGet(rotateX, rotateY, rotateY);
 }
 
 inline int MODEL :: getHp(){
@@ -112,9 +115,48 @@ inline int MODEL :: getModelHandle(){
 }
 
 inline int MODEL :: damageCheck(SHOT* oS){
-	int dcount = oS->collisionModel(ModelHandle);
-	hp -= dcount*5;
+	if(hp > 0){
+		int dcount = oS->collisionModel(ModelHandle);
+		hp -= dcount*5;
+	}else{
+		hp = 0;
+	}
 	return hp;
 }
+inline void MODEL :: doNotMove(bool flag){
+	if(!flag)
+		return;
+	this->x = this->preX;
+	this->y = this->preY;
+	this->z = this->preZ;
+	this->rotateX = this->preRX;
+	this->rotateY = this->preRY;
+	this->rotateZ = this->preRZ;
+}
+
+inline bool MODEL :: collision(VECTOR pos, VECTOR rotate){
+		MV1_COLL_RESULT_POLY_DIM  result;
+		static float r;
+		if(!cflag){
+			r=250.0f;
+			VECTOR pos1 = VGet(pos.x+600*sinf(rotate.y), pos.y+100.0f+200.0f-500*sinf(rotate.x), pos.z+600*cosf(rotate.y));
+			VECTOR pos2 = VGet(pos.x-200*sinf(rotate.y), pos.y+100.0f+200.0f+500*sinf(rotate.x), pos.z-200*cosf(rotate.y));
+			result = MV1CollCheck_Capsule(ModelHandle, 39, pos1, pos2, r);
+		}else{
+			r -= 10.0f;
+			VECTOR pos1 = VGet(pos.x+600*sinf(rotate.y), pos.y+100.0f+200.0f-500*sinf(rotate.x), pos.z+600*cosf(rotate.y));
+			VECTOR pos2 = VGet(pos.x-200*sinf(rotate.y), pos.y+100.0f+200.0f+500*sinf(rotate.x), pos.z-200*cosf(rotate.y));
+			result = MV1CollCheck_Capsule(ModelHandle, 39, pos1, pos2, r);
+		}
+		DrawFormatString(300, 350, GetColor(255, 255, 255), "%lf", r);
+		if(result.HitNum > 0){
+			MV1CollResultPolyDimTerminate(result);
+			cflag = true;
+			return true;
+		}
+		MV1CollResultPolyDimTerminate(result);
+		cflag = false;
+		return false;
+	}
 //public--end
 #endif

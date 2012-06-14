@@ -2,7 +2,9 @@
 #include "managiment.hpp"
 #include "player.hpp"
 #include "enemy_net.hpp"
+#include "read_init.hpp"
 #include "target.hpp"
+#include "building.h"
 
 //FPS表示関数
 void MANAGIMENT :: fpsDisplay(){
@@ -91,9 +93,11 @@ void MANAGIMENT :: freeMode(){
 	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 
+	BUILDING buil;
+
 	//弾の配列の確保
 	SHOT* mShot;
-	mShot = new SHOT(GetColor(255, 255, 0));
+	mShot = new SHOT(GetColor(255, 255, 0), 15.0f, 85.0f);
 	//モデルの読み込み
 	PLAYER* p;
 	p = new PLAYER(VGet(0, 0, 0), 0.0, mShot);
@@ -104,20 +108,23 @@ void MANAGIMENT :: freeMode(){
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
 		ClearDrawScreen();
-		//ここから
 		//床の描画
 		MV1DrawModel(ModelHandle);
+		
+		buil.display();
 		//FPSの表示
 		fpsDisplay();
 		//モデルの操作,描画
 		p->control();
 		p->display();
 		t.display();
+		p->doNotMove(buil.collision(p->getPos(), p->getRotate()));
+		p->doNotMove(t.collision(p->getPos(), p->getRotate()));
+		mShot->collisionTarget(buil.getModelHandle());
 		if(mShot->collisionTarget(t.getModelHandle()) > 0){
 			t.delTarget();
 			t.newTarget();
 		}
-		//ここまで
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
@@ -125,6 +132,7 @@ void MANAGIMENT :: freeMode(){
 	delete mShot;
 	delete p;
 }
+
 void MANAGIMENT :: battleModeC(){
 	int ModelHandle;
 	//床読み込み
@@ -135,20 +143,24 @@ void MANAGIMENT :: battleModeC(){
 	//弾の配列の確保
 	SHOT* mShot;
 	SHOT* eShot;
-	mShot = new SHOT(GetColor(255, 255, 0));
-	eShot = new SHOT(GetColor(255, 0, 0));
+	mShot = new SHOT(GetColor(255, 255, 0), 15.0f, 85.0f);
+	eShot = new SHOT(GetColor(255, 0, 0), 15.0f, 85.0f);
 	//モデルの読み込み
 	PLAYER* p;
 	ENEMY* e;
-	p = new PLAYER(VGet(0, 0, 4000.0), 0.0f, mShot);
-	e = new ENEMY(VGet(0, 0, -4000), PI, eShot);
+	p = new PLAYER(VGet(0, 0, 3500.0), 0.0f, mShot);
+	e = new ENEMY(VGet(0, 0, -3500), PI, eShot);
+	BUILDING buil;
 
+	int pH;
+	int eH;
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
 		ClearDrawScreen();
-		//ここから
+
 		//床の描画
 		MV1DrawModel(ModelHandle);
+		buil.display();
 		//FPSの表示
 		fpsDisplay();
 		//モデルの操作,描画
@@ -156,26 +168,35 @@ void MANAGIMENT :: battleModeC(){
 		p->control();
 		p->display();
 		//敵
-		e->control(p->getRotateY(), p->getVector());
+		VECTOR rotateP = p->getRotate();
+		e->control(rotateP.y, p->getVector());
 		e->display();
 		
-		if(p->damageCheck(eShot) <= 0)
-			break;
-		if(e->damageCheck(mShot) <= 0)
+		p->doNotMove(buil.collision(p->getPos(), p->getRotate()));
+		e->doNotMove(buil.collision(e->getPos(), e->getRotate()));
+		mShot->collisionTarget(buil.getModelHandle());
+		eShot->collisionTarget(buil.getModelHandle());
+
+		p->doNotMove(p->collision(e->getPos(), e->getRotate()));
+		e->doNotMove(e->collision(p->getPos(), p->getRotate()));
+		
+		pH = p->damageCheck(eShot);
+		eH = e->damageCheck(mShot);
+		if(pH <=0 || eH <= 0)
 			break;
 		mShot->collisionModel(e->getModelHandle());
 		eShot->collisionModel(p->getModelHandle());
-		//ここまで
+		
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
-	int pH;
-	int eH;
+	
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		// 画面をクリア
 		ClearDrawScreen();
 		//床の描画
 		MV1DrawModel(ModelHandle);
+		buil.display();
 		//FPSの表示
 		SetFontSize(16);
 		fpsDisplay();
@@ -203,6 +224,12 @@ void MANAGIMENT :: battleModeC(){
 	delete e;
 }
 
+
+
+bool nflag1 = false;
+bool nflag2 = false;
+
+
 void MANAGIMENT :: battleModeH(){
 	int ModelHandle;
 	//床読み込み
@@ -210,11 +237,13 @@ void MANAGIMENT :: battleModeH(){
 	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 
+	BUILDING buil;
+
 	//弾の配列の確保
 	SHOT* mShot;
 	SHOT* eShot;
-	mShot = new SHOT(GetColor(255, 255, 0));
-	eShot = new SHOT(GetColor(255, 0, 0));
+	mShot = new SHOT(GetColor(255, 255, 0), 15.0f, 85.0f);
+	eShot = new SHOT(GetColor(255, 0, 0), 15.0f, 85.0f);
 
 	
 	READ_INIT* read;
@@ -223,7 +252,10 @@ void MANAGIMENT :: battleModeH(){
 	int src_port;
 	char sin_ip[32];
 	int sin_port;
-	read->read(src_ip, &src_port, sin_ip, &sin_port);
+	VECTOR pPos;
+	VECTOR ePos;
+	float pR, eR;
+	read->read(src_ip, &src_port, sin_ip, &sin_port, &pPos, &ePos, &pR, &eR);
 	delete read;
 	
 	NET_TRANS* net;
@@ -233,15 +265,14 @@ void MANAGIMENT :: battleModeH(){
 
 	hTh = (HANDLE)_beginthreadex(NULL, 0, &thread_recv, net, 0, &thID);
 	ResumeThread(hTh);
-	net->flag1 = false;
-	net->flag2 = false;
+
 	while(1){
 		DrawFormatString(20, 20, GetColor(0, 0, 0), "通信中");
-		if(!net->flag2)
+		if(!nflag2)
 			net->send("start");
-		if(net->flag1)
+		if(nflag1)
 			net->send("ok");
-		if(net->flag1 && net->flag2)
+		if(nflag1 && nflag2)
 			break;
 		if(ProcessMessage() != 0 || CheckHitKey(KEY_INPUT_ESCAPE) != 0){
 			TerminateThread(hTh, 0);
@@ -258,8 +289,8 @@ void MANAGIMENT :: battleModeH(){
 	//モデルの読み込み
 	PLAYER* p;
 	ENEMY_NET* e;
-	p = new PLAYER(VGet(0, 0, 4000.0), 0.0f, mShot, net);
-	e = new ENEMY_NET(VGet(0, 0, -4000), PI, eShot, net);
+	p = new PLAYER(pPos, pR, mShot, net);
+	e = new ENEMY_NET(ePos, eR, eShot, net);
 	e->start(e);
 
 	int pH;
@@ -270,6 +301,7 @@ void MANAGIMENT :: battleModeH(){
 		ClearDrawScreen();
 		//床の描画
 		MV1DrawModel(ModelHandle);
+		buil.display();
 		//FPSの表示
 		fpsDisplay();
 		//モデルの操作,描画
@@ -277,17 +309,24 @@ void MANAGIMENT :: battleModeH(){
 		p->control();
 		p->display();
 		p->send();
+
+		p->doNotMove(buil.collision(p->getPos(), p->getRotate()));
+		//e->doNotMove(buil.collision(e->getPos(), e->getRotate()));
+		mShot->collisionTarget(buil.getModelHandle());
+		eShot->collisionTarget(buil.getModelHandle());
+
+		p->doNotMove(p->collision(e->getPos(), e->getRotate()));
+		//e->doNotMove(e->collision(p->getPos(), p->getRotate()));
+
 		//敵
 		e->enterCritical();
 		e->display();
 		pH = p->damageCheck(eShot);
-		eH = e->damageCheck(mShot);
-		if(pH <= 0 || eH <= 0){
+		//eH = e->damageCheck(mShot);
+		if(e->getHp() <= 0 || pH <= 0){
 			e->leaveCritical();
 			break;
 		}
-		mShot->collisionModel(e->getModelHandle());
-		eShot->collisionModel(p->getModelHandle());
 		e->leaveCritical();
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
@@ -300,6 +339,7 @@ void MANAGIMENT :: battleModeH(){
 		ClearDrawScreen();
 		//床の描画
 		MV1DrawModel(ModelHandle);
+		buil.display();
 		//FPSの表示
 		SetFontSize(16);
 		fpsDisplay();
@@ -323,7 +363,7 @@ void MANAGIMENT :: battleModeH(){
 	SetFontSize(16);
 	
 	
-	//delete net;
+	delete net;
 
 	MV1DeleteModel(ModelHandle);
 	delete mShot;

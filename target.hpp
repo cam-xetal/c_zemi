@@ -13,12 +13,15 @@ private:
 	void getRand();
 	//inline--end
 public:
+	//inline--start
 	TARGET(void);
 	~TARGET();
 	void newTarget();
 	void delTarget();
 	void display();
 	int getModelHandle();
+	bool collision(VECTOR pos, VECTOR rotate);
+	//inline--end
 };
 
 //private--start
@@ -34,6 +37,7 @@ inline void TARGET :: getRand(){
 inline TARGET :: TARGET(void){
 	srand((unsigned)time(NULL));
 	ModelHandle = MV1LoadModel("model\\target\\target.mqo");
+	MV1SetScale(ModelHandle, VGet(3.0f, 3.0f, 3.0f));
 }
 
 inline TARGET :: ~TARGET(){
@@ -61,5 +65,18 @@ inline void TARGET :: display(){
 
 inline int TARGET :: getModelHandle(){
 	return ModelHandle;
+}
+
+bool TARGET :: collision(VECTOR pos, VECTOR rotate){
+	VECTOR pos1 = VGet(pos.x+600*sinf(rotate.y), pos.y+100.0f+200.0f-500*sinf(rotate.x), pos.z+600*cosf(rotate.y));
+	VECTOR pos2 = VGet(pos.x-200*sinf(rotate.y), pos.y+100.0f+200.0f+500*sinf(rotate.x), pos.z-200*cosf(rotate.y));
+
+	MV1_COLL_RESULT_POLY_DIM  result = MV1CollCheck_Capsule(ModelHandle, -1, pos1, pos2, 210.0f);
+	if(result.HitNum > 0){
+		MV1CollResultPolyDimTerminate(result);
+		return true;
+	}
+	MV1CollResultPolyDimTerminate(result);
+	return false;
 }
 //public--end

@@ -30,7 +30,7 @@ void NET_UDP :: setSrcAddr(char* ip, int port){
 	src_addr.sin_port = htons(port);
 	if(inet_addr(ip) == -1)
 		exit(1);
-	src_addr.sin_addr.S_un.S_addr = inet_addr(ip);//INADDR_ANY;
+	src_addr.sin_addr.S_un.S_addr = inet_addr(ip);
 }
 
 void NET_UDP :: setSinAddr(char* ip, int port){
@@ -38,7 +38,7 @@ void NET_UDP :: setSinAddr(char* ip, int port){
 	sin_addr.sin_port = htons(port);
 	if(inet_addr(ip) == -1)
 		exit(1);
-	sin_addr.sin_addr.S_un.S_addr = inet_addr(ip);//INADDR_ANY;
+	sin_addr.sin_addr.S_un.S_addr = inet_addr(ip);
 }
 
 void NET_UDP :: setBind(){
@@ -56,8 +56,7 @@ int NET_UDP :: recv(char* str){
 	struct sockaddr_in clt;
 	sin_size = sizeof(struct sockaddr_in);
 	sizeof(str);
-	recvfrom(sock, str, sizeof(char)*256, 0,  (struct sockaddr *)&clt, &sin_size);
-	//printf("%s\n", buf);
-	//printf("%d\n", clt.sin_port);
-	return 1;
+	int i = recvfrom(sock, str, sizeof(char)*256, 0,  (struct sockaddr *)&clt, &sin_size);
+
+	return i;
 }

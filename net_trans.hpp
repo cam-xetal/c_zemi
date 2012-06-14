@@ -4,40 +4,13 @@
 
 #include <stdio.h>
 #include "net_udp.hpp"
-//#include "DxLib.h"
 
 class NET_TRANS : public NET_UDP{
 private:
 public:
-	bool flag1;
-	bool flag2;
 	NET_TRANS(char* src_ip, int src_port, char* sin_ip, int sin_port) : NET_UDP(src_ip, src_port, sin_ip, sin_port){}
-	
-	void sendData(float x, float y, float z, float rotateX, float rotateY, float rotateZ, bool shot, int hp){
-		char buf[256];
-		int flag;
-
-		if(shot)
-			flag = 1;
-		else
-			flag = 0;
-		sprintf_s(buf, "x:%f,y:%f,z:%f,rotateX:%f,rotateY:%f,rotateZ:%f,shot:%d,hp:%d", x, y, z, rotateX, rotateY, rotateZ, flag, hp);
-		send(buf);
-	}
-
-	void recvData(float* x, float* y, float* z, float* rotateX, float* rotateY, float* rotateZ, bool* shot, int* hp){
-		int ishot=0;
-		
-		char str[256];
-		recv(str);
-				
-		int i = sscanf_s(str, "x:%f,y:%f,z:%f,rotateX:%f,rotateY:%f,rotateZ:%f,shot:%d,hp:%d", x, y, z, rotateX, rotateY, rotateZ, &ishot, hp);
-
-		if(ishot == 1)
-			*shot = true;
-		else
-			*shot = false;
-	}
+	void sendData(float x, float y, float z, float rotateX, float rotateY, float rotateZ, bool shot, int hp);
+	bool recvData(float* x, float* y, float* z, float* rotateX, float* rotateY, float* rotateZ, bool* shot, int* hp);
 };
 
 #endif

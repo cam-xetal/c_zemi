@@ -7,6 +7,7 @@ void PLAYER :: display(){
 	SetCameraPositionAndTarget_UpVecY(VGet(cx, cy ,cz), VGet(x, y, z));
 	MODEL :: display();
 }
+
 void PLAYER :: control(){
 	bool fFlag = false;
 	bool bFlag = false;
@@ -71,5 +72,5 @@ void PLAYER :: control(){
 }
 
 void PLAYER :: send(){
-	net->sendData(-this->x, this->y, -this->z, this->rotateX, this->rotateY+PI, this->rotateZ, sflag, hp);
+	net->sendData(this->x, this->y, this->z, this->rotateX, this->rotateY, this->rotateZ, sflag, hp);
 }
