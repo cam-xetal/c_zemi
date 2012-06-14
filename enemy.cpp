@@ -169,8 +169,14 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 		return;
 	float rand = getRand();
 	//‘OŒãİ’è
-	fFlag = true;
-	bFlag = false;
+	
+	if(rand < 0.8){
+		fFlag = true;
+		bFlag = false;
+	}else{
+		fFlag = false;
+		bFlag = true;
+	}
 	/*
 	if(fFlag == bFlag){
 		if(rand < 0.9){
@@ -213,7 +219,7 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 		else
 			upFlag = false;
 	}else{
-		if(rand < 0.95)
+		if(rand < 0.7)
 			upFlag = false;
 		else
 			upFlag = true;
@@ -232,7 +238,7 @@ void ENEMY :: ai(float rotateY, VECTOR pV){
 			rRFlag = false;
 			lRFlag = true;
 		}
-	}else if(fabs(tmp) < 0.05){
+	}else if(fabs(tmp) < 0.95){
 		if(rand < 0.6){
 			rRFlag = true;
 			lRFlag = false;

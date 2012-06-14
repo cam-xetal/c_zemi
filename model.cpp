@@ -83,11 +83,11 @@ void MODEL :: move(bool fFlag, bool bFlag, bool upFlag, bool rRFlag, bool lRFlag
 
 	//ã¸
 	if(upFlag){
-		y+=10.0f;
+		y+=16.0f;
 		if(y > MAX_Y)
 			y=MAX_Y;
 	}else{
-		y-=5.0f;
+		y-=8.0f;
 		if(y < MIN_Y)
 			y=MIN_Y;
 	}

@@ -46,6 +46,7 @@ inline void TARGET :: getRand(){
 inline TARGET :: TARGET(void){
 	srand((unsigned)time(NULL));
 	ModelHandle = MV1LoadModel("model\\target\\target.mqo");
+	MV1SetScale(ModelHandle, VGet(3.0f, 3.0f, 3.0f));
 }
 
 inline TARGET :: ~TARGET(){

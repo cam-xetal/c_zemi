@@ -23,18 +23,21 @@ public:
 		send(buf);
 	}
 
-	void recvData(float* x, float* y, float* z, float* rotateX, float* rotateY, float* rotateZ, bool* shot, int* hp){
+	bool recvData(float* x, float* y, float* z, float* rotateX, float* rotateY, float* rotateZ, bool* shot, int* hp){
 		int ishot=0;
 		
 		char str[256];
-		recv(str);
+		if(recv(str) == 0)
+			return false;
 				
-		int i = sscanf_s(str, "x:%f,y:%f,z:%f,rotateX:%f,rotateY:%f,rotateZ:%f,shot:%d,hp:%d", x, y, z, rotateX, rotateY, rotateZ, &ishot, hp);
+		sscanf_s(str, "x:%f,y:%f,z:%f,rotateX:%f,rotateY:%f,rotateZ:%f,shot:%d,hp:%d", x, y, z, rotateX, rotateY, rotateZ, &ishot, hp);
 
 		if(ishot == 1)
 			*shot = true;
 		else
 			*shot = false;
+
+		return true;
 	}
 };
 

@@ -21,6 +21,7 @@ protected:
 	SHOT* mS;
 	int hp;
 	int count;
+	bool cflag;
 	//inline--start
 	void virtual init(void);
 	void virtual displayHp(void);
@@ -46,15 +47,27 @@ public:
 		this->rotateZ = this->preRZ;
 	}
 	bool collision(VECTOR pos, VECTOR rotate){
-		VECTOR pos1 = VGet(pos.x+600*sinf(rotate.y), pos.y+100.0f+200.0f-500*sinf(rotate.x), pos.z+600*cosf(rotate.y));
-		VECTOR pos2 = VGet(pos.x-200*sinf(rotate.y), pos.y+100.0f+200.0f+500*sinf(rotate.x), pos.z-200*cosf(rotate.y));
-
-		MV1_COLL_RESULT_POLY_DIM  result = MV1CollCheck_Capsule(ModelHandle, 39, pos1, pos2, 210.0f);
+		MV1_COLL_RESULT_POLY_DIM  result;
+		static float r;
+		if(!cflag){
+			r=250.0f;
+			VECTOR pos1 = VGet(pos.x+600*sinf(rotate.y), pos.y+100.0f+200.0f-500*sinf(rotate.x), pos.z+600*cosf(rotate.y));
+			VECTOR pos2 = VGet(pos.x-200*sinf(rotate.y), pos.y+100.0f+200.0f+500*sinf(rotate.x), pos.z-200*cosf(rotate.y));
+			result = MV1CollCheck_Capsule(ModelHandle, 39, pos1, pos2, r);
+		}else{
+			r -= 10.0f;
+			VECTOR pos1 = VGet(pos.x+600*sinf(rotate.y), pos.y+100.0f+200.0f-500*sinf(rotate.x), pos.z+600*cosf(rotate.y));
+			VECTOR pos2 = VGet(pos.x-200*sinf(rotate.y), pos.y+100.0f+200.0f+500*sinf(rotate.x), pos.z-200*cosf(rotate.y));
+			result = MV1CollCheck_Capsule(ModelHandle, 39, pos1, pos2, r);
+		}
+		DrawFormatString(300, 350, GetColor(255, 255, 255), "%lf", r);
 		if(result.HitNum > 0){
 			MV1CollResultPolyDimTerminate(result);
+			cflag = true;
 			return true;
 		}
 		MV1CollResultPolyDimTerminate(result);
+		cflag = false;
 		return false;
 	}
 	//inline--end
@@ -78,6 +91,7 @@ inline void MODEL :: init(void){
 	rotateX = rotateY = rotateZ = 0;
 	v = 0;
 	count = 0;
+	cflag = false;
 }
 
 inline void MODEL :: displayHp(){

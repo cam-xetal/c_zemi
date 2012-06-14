@@ -56,8 +56,8 @@ int NET_UDP :: recv(char* str){
 	struct sockaddr_in clt;
 	sin_size = sizeof(struct sockaddr_in);
 	sizeof(str);
-	recvfrom(sock, str, sizeof(char)*256, 0,  (struct sockaddr *)&clt, &sin_size);
+	int i = recvfrom(sock, str, sizeof(char)*256, 0,  (struct sockaddr *)&clt, &sin_size);
 	//printf("%s\n", buf);
 	//printf("%d\n", clt.sin_port);
-	return 1;
+	return i;
 }

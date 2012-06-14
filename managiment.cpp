@@ -87,13 +87,12 @@ void MANAGIMENT :: selectAction(void){
 
 void MANAGIMENT :: freeMode(){
 	int ModelHandle;
-	int ModelHandleBuilding;
 	//è∞ì«Ç›çûÇ›
 	ModelHandle = MV1LoadModel("model\\floor\\floor.mqo");
 	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 
-	BUILDING buil(VGet(0, 0, 5000.0f));
+	BUILDING buil;
 
 	//íeÇÃîzóÒÇÃämï€
 	SHOT* mShot;
@@ -120,6 +119,7 @@ void MANAGIMENT :: freeMode(){
 		t.display();
 		p->doNotMove(buil.collision(p->getPos(), p->getRotate()));
 		p->doNotMove(t.collision(p->getPos(), p->getRotate()));
+		mShot->collisionTarget(buil.getModelHandle());
 		if(mShot->collisionTarget(t.getModelHandle()) > 0){
 			t.delTarget();
 			t.newTarget();
@@ -147,9 +147,9 @@ void MANAGIMENT :: battleModeC(){
 	//ÉÇÉfÉãÇÃì«Ç›çûÇ›
 	PLAYER* p;
 	ENEMY* e;
-	p = new PLAYER(VGet(0, 0, 4000.0), 0.0f, mShot);
-	e = new ENEMY(VGet(0, 0, -4000), PI, eShot);
-
+	p = new PLAYER(VGet(0, 0, 3500.0), 0.0f, mShot);
+	e = new ENEMY(VGet(0, 0, -3500), PI, eShot);
+	BUILDING buil;
 
 	int pH;
 	int eH;
@@ -159,6 +159,7 @@ void MANAGIMENT :: battleModeC(){
 
 		//è∞ÇÃï`âÊ
 		MV1DrawModel(ModelHandle);
+		buil.display();
 		//FPSÇÃï\é¶
 		fpsDisplay();
 		//ÉÇÉfÉãÇÃëÄçÏ,ï`âÊ
@@ -169,6 +170,11 @@ void MANAGIMENT :: battleModeC(){
 		VECTOR rotateP = p->getRotate();
 		e->control(rotateP.y, p->getVector());
 		e->display();
+		
+		p->doNotMove(buil.collision(p->getPos(), p->getRotate()));
+		e->doNotMove(buil.collision(e->getPos(), e->getRotate()));
+		mShot->collisionTarget(buil.getModelHandle());
+		eShot->collisionTarget(buil.getModelHandle());
 
 		p->doNotMove(p->collision(e->getPos(), e->getRotate()));
 		e->doNotMove(e->collision(p->getPos(), p->getRotate()));
@@ -189,6 +195,7 @@ void MANAGIMENT :: battleModeC(){
 		ClearDrawScreen();
 		//è∞ÇÃï`âÊ
 		MV1DrawModel(ModelHandle);
+		buil.display();
 		//FPSÇÃï\é¶
 		SetFontSize(16);
 		fpsDisplay();
@@ -229,6 +236,8 @@ void MANAGIMENT :: battleModeH(){
 	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 
+	BUILDING buil;
+
 	//íeÇÃîzóÒÇÃämï€
 	SHOT* mShot;
 	SHOT* eShot;
@@ -242,7 +251,10 @@ void MANAGIMENT :: battleModeH(){
 	int src_port;
 	char sin_ip[32];
 	int sin_port;
-	read->read(src_ip, &src_port, sin_ip, &sin_port);
+	VECTOR pPos;
+	VECTOR ePos;
+	float pR, eR;
+	read->read(src_ip, &src_port, sin_ip, &sin_port, &pPos, &ePos, &pR, &eR);
 	delete read;
 	
 	NET_TRANS* net;
@@ -276,8 +288,8 @@ void MANAGIMENT :: battleModeH(){
 	//ÉÇÉfÉãÇÃì«Ç›çûÇ›
 	PLAYER* p;
 	ENEMY_NET* e;
-	p = new PLAYER(VGet(0, 0, 4000.0), 0.0f, mShot, net);
-	e = new ENEMY_NET(VGet(0, 0, -4000), PI, eShot, net);
+	p = new PLAYER(pPos, pR, mShot, net);
+	e = new ENEMY_NET(ePos, eR, eShot, net);
 	e->start(e);
 
 	int pH;
@@ -288,6 +300,7 @@ void MANAGIMENT :: battleModeH(){
 		ClearDrawScreen();
 		//è∞ÇÃï`âÊ
 		MV1DrawModel(ModelHandle);
+		buil.display();
 		//FPSÇÃï\é¶
 		fpsDisplay();
 		//ÉÇÉfÉãÇÃëÄçÏ,ï`âÊ
@@ -295,6 +308,15 @@ void MANAGIMENT :: battleModeH(){
 		p->control();
 		p->display();
 		p->send();
+
+		p->doNotMove(buil.collision(p->getPos(), p->getRotate()));
+		//e->doNotMove(buil.collision(e->getPos(), e->getRotate()));
+		mShot->collisionTarget(buil.getModelHandle());
+		eShot->collisionTarget(buil.getModelHandle());
+
+		p->doNotMove(p->collision(e->getPos(), e->getRotate()));
+		//e->doNotMove(e->collision(p->getPos(), p->getRotate()));
+
 		//ìG
 		e->enterCritical();
 		e->display();
@@ -316,6 +338,7 @@ void MANAGIMENT :: battleModeH(){
 		ClearDrawScreen();
 		//è∞ÇÃï`âÊ
 		MV1DrawModel(ModelHandle);
+		buil.display();
 		//FPSÇÃï\é¶
 		SetFontSize(16);
 		fpsDisplay();

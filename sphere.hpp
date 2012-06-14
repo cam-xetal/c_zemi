@@ -70,7 +70,7 @@ inline bool SPHERE :: move(void){
 		flag = true;
 	}
 
-	y += v * sinf(rotateX/2.5f);
+	y += v * sinf(rotateX/1.5f);
 	if(y > MAX_Y){
 		y = MAX_Y;
 		flag = true;
