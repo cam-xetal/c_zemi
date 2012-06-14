@@ -2,6 +2,7 @@
 #include "managiment.hpp"
 #include "player.hpp"
 #include "enemy_net.hpp"
+#include "read_init.hpp"
 #include "target.hpp"
 #include "building.h"
 

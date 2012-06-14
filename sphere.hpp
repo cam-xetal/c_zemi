@@ -53,8 +53,7 @@ inline float SPHERE :: getRadius(){
 }
 
 inline void SPHERE :: display(void){
-	//if(dflag)
-		DrawSphere3D(VGet(x, y, z), radius, 16, col, col, TRUE);
+	DrawSphere3D(VGet(x, y, z), radius, 16, col, col, TRUE);
 }
 
 //ˆÚ“®

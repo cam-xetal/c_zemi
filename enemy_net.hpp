@@ -1,20 +1,17 @@
 #include <process.h>
 #include "enemy.hpp"
-#include "read_init.hpp"
+//#include "read_init.hpp"
 #include "net_trans.hpp"
 
 class ENEMY_NET : public ENEMY{
 private:
 	CRITICAL_SECTION cs;
-	int port;
-	char ip[16];
 	NET_TRANS* net;
 	unsigned int thID;
 	HANDLE hTh;
 	//inline--start
 	void control(){
 		bool shot;
-		
 		EnterCriticalSection(&cs);
 		net->recvData(&this->x, &this->y, &this->z, &this->rotateX, &this->rotateY, &this->rotateZ, &shot, &hp);
 		if(shot){

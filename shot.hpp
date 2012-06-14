@@ -19,7 +19,6 @@ public:
 	void newShots(VECTOR pos1, VECTOR pos2, VECTOR rotate1, VECTOR rotate2);
 	//’e‚Ìíœ
 	void delShot();
-	//void delShot(int index);
 	//“–‚½‚è”»’è
 	int collisionModel(int ModelHandle);
 	int collisionTarget(int ModelHandle);

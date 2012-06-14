@@ -63,7 +63,6 @@ inline void MANAGIMENT :: init(void){
 	//ライト指定
 	ChangeLightTypeDir(VGet(1.0, -1.0, 0.0));
 	CreateDirLightHandle(VGet(-1.0, 1, 0));
-	//Zバッファ設定
 	//Zバッファ使用
 	SetUseZBuffer3D(TRUE);
 	SetWriteZBuffer3D(TRUE);

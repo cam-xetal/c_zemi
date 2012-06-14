@@ -18,7 +18,6 @@ public:
 	//inline--start
 	PLAYER(VECTOR pos, float rotate, SHOT* mS);
 	PLAYER(VECTOR pos, float rotate, SHOT* mS, NET_TRANS* net);
-	//PLAYER(VECTOR pos, float rotate, char* file, SHOT* mS);
 	void addCR(float cr);
 	//inline--end
 	void display();

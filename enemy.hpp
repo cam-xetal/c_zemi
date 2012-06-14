@@ -1,6 +1,3 @@
-#ifndef ENEMY_B
-#define EMEMY_B
-
 #include "DxLib.h"
 #include <stdlib.h>
 #include <time.h>
@@ -18,7 +15,6 @@ private:
 	//inline--start
 	float getRand();
 	void displayHp();
-	//void init();
 	//inline--end
 	void ai();
 	void ai(VECTOR pV);
@@ -26,7 +22,6 @@ private:
 public:
 	//inline--start
 	ENEMY(VECTOR pos, float rotate, SHOT* mS);
-	//ENEMY(VECTOR pos, float rotate, char* file, SHOT* mS);
 	void display();
 	void virtual control();
 	void control(VECTOR pV);
@@ -38,17 +33,6 @@ public:
 inline float ENEMY :: getRand(){
 	return (float)rand()/((float)(RAND_MAX+0.1f));
 }
-
-/*
-inline void ENEMY :: init(){
-	srand((unsigned)time(NULL));
-	fFlag = false;
-	bFlag =false;
-	upFlag = false;
-	rRFlag = false;
-	lRFlag = false;
-	vFlag = false;
-}*/
 
 inline void ENEMY :: displayHp(){
 	DrawBox(400, 45, 600, 65, GetColor(255, 125, 0), FALSE);
@@ -66,11 +50,6 @@ inline ENEMY :: ENEMY(VECTOR pos, float rotate, SHOT* mS) : MODEL(mS, rotate){
 	lRFlag = false;
 	vFlag = false;
 }
-
-/*
-inline ENEMY :: ENEMY(VECTOR pos, float rotate, char* file, SHOT* mS) : MODEL(file, mS, rotate){
-	init();
-}*/
 
 inline void ENEMY :: display(){
 	displayHp();
@@ -95,5 +74,3 @@ inline void ENEMY :: control(float rotateY, VECTOR pV){
 	shot();
 }
 //public--end
-
-#endif
