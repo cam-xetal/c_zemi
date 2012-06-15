@@ -9,10 +9,13 @@ ENEMY_NET :: ~ENEMY_NET(){
 	DeleteCriticalSection(&cs);
 }
 void ENEMY_NET :: start(ENEMY_NET* en){
+	sflag1 = true;
 	hTh = (HANDLE)_beginthreadex(NULL, 0, &thread, en, 0, &thID);
 	ResumeThread(hTh);
 }
 void ENEMY_NET :: stop(){
-	TerminateThread(hTh, 0);
+	//TerminateThread(hTh, 0);
+	sflag1 = false;
+	//WaitForSingleObject(this->hTh, INFINITE);
 	CloseHandle(hTh);
 }

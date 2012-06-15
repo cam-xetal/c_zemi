@@ -14,3 +14,4 @@
 
 extern bool nflag1;
 extern bool nflag2;
+extern bool sflag1;

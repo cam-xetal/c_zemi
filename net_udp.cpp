@@ -49,12 +49,9 @@ void NET_UDP :: send(char* str){
 }
 
 int NET_UDP :: recv(char* str){
-	char buf[256];
-	memset(buf, 0, sizeof(char)*256);
 	int sin_size;
 	struct sockaddr_in clt;
 	sin_size = sizeof(struct sockaddr_in);
-	sizeof(str);
 	int i = recvfrom(sock, str, sizeof(char)*256, 0,  (struct sockaddr *)&clt, &sin_size);
 
 	return i;

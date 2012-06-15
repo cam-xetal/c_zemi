@@ -2,7 +2,6 @@
 
 
 BUILDING :: BUILDING(){
-	cflag = false;
 	ModelHandle = MV1LoadModel("model\\building\\building.mqo");
 	MV1SetScale(ModelHandle, VGet(5.0f, 4.0f, 5.0f));
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
@@ -10,7 +9,6 @@ BUILDING :: BUILDING(){
 }
 
 BUILDING :: BUILDING(VECTOR pos){
-	cflag = false;
 	ModelHandle = MV1LoadModel("model\\building\\building.mqo");
 	MV1SetScale(ModelHandle, VGet(5.0f, 4.0f, 5.0f));
 	MV1SetPosition(ModelHandle, pos);

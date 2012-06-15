@@ -4,6 +4,7 @@
 
 #include "Dxlib.h"
 #include "shot.hpp"
+#include <math.h>
 
 class MODEL{
 protected:
@@ -18,6 +19,7 @@ protected:
 	float rotateX, rotateY, rotateZ;
 	float preRX, preRY, preRZ;
 	float v;
+	float r;
 	SHOT* mS;
 	int hp;
 	int count;
@@ -60,6 +62,7 @@ inline void MODEL :: init(void){
 	v = 0;
 	count = 0;
 	cflag = false;
+	r = 250.0f;
 }
 
 inline void MODEL :: displayHp(){
@@ -136,19 +139,22 @@ inline void MODEL :: doNotMove(bool flag){
 
 inline bool MODEL :: collision(VECTOR pos, VECTOR rotate){
 		MV1_COLL_RESULT_POLY_DIM  result;
-		static float r;
 		if(!cflag){
-			r=250.0f;
+			r += 5.0f;
+			if(r > 250.0f)
+				r = 250.0f;
 			VECTOR pos1 = VGet(pos.x+600*sinf(rotate.y), pos.y+100.0f+200.0f-500*sinf(rotate.x), pos.z+600*cosf(rotate.y));
 			VECTOR pos2 = VGet(pos.x-200*sinf(rotate.y), pos.y+100.0f+200.0f+500*sinf(rotate.x), pos.z-200*cosf(rotate.y));
 			result = MV1CollCheck_Capsule(ModelHandle, 39, pos1, pos2, r);
 		}else{
-			r -= 10.0f;
+			r -= 5.0f;
+			if(r < 100.0f)
+				r = 100.0f;
 			VECTOR pos1 = VGet(pos.x+600*sinf(rotate.y), pos.y+100.0f+200.0f-500*sinf(rotate.x), pos.z+600*cosf(rotate.y));
 			VECTOR pos2 = VGet(pos.x-200*sinf(rotate.y), pos.y+100.0f+200.0f+500*sinf(rotate.x), pos.z-200*cosf(rotate.y));
 			result = MV1CollCheck_Capsule(ModelHandle, 39, pos1, pos2, r);
 		}
-		DrawFormatString(300, 350, GetColor(255, 255, 255), "%lf", r);
+		//DrawFormatString(300, 350, GetColor(255, 255, 255), "%lf", r);
 		if(result.HitNum > 0){
 			MV1CollResultPolyDimTerminate(result);
 			cflag = true;

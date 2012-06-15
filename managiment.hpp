@@ -17,9 +17,9 @@ private:
 
 	void fpsDisplay();
 	static unsigned __stdcall thread_recv(void* param){
-		char str[16];
+		char str[256];
 		NET_TRANS* net = (NET_TRANS*)param;
-		while(1){
+		while(!sflag1){
 			net->recv(str);
 			if(strncmp(str, "start", 5) == 0){
 				nflag1 = true;

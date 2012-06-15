@@ -7,7 +7,7 @@ void NET_TRANS :: sendData(float x, float y, float z, float rotateX, float rotat
 		flag = 1;
 	else
 		flag = 0;
-	sprintf_s(buf, "x:%f,y:%f,z:%f,rotateX:%f,rotateY:%f,rotateZ:%f,shot:%d,hp:%d", x, y, z, rotateX, rotateY, rotateZ, flag, hp);
+	sprintf_s(buf, "x:%f,y:%f,z:%f,rotateX:%f,rotateY:%f,rotateZ:%f,shot:%d,hp:%d\0", x, y, z, rotateX, rotateY, rotateZ, flag, hp);
 	send(buf);
 }
 
@@ -18,7 +18,7 @@ bool NET_TRANS :: recvData(float* x, float* y, float* z, float* rotateX, float* 
 	if(recv(str) == 0)
 		return false;
 
-	sscanf_s(str, "x:%f,y:%f,z:%f,rotateX:%f,rotateY:%f,rotateZ:%f,shot:%d,hp:%d", x, y, z, rotateX, rotateY, rotateZ, &ishot, hp);
+	sscanf_s(str, "x:%f,y:%f,z:%f,rotateX:%f,rotateY:%f,rotateZ:%f,shot:%d,hp:%d\0", x, y, z, rotateX, rotateY, rotateZ, &ishot, hp);
 
 	if(ishot == 1)
 		*shot = true;

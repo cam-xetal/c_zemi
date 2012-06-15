@@ -1,9 +1,9 @@
 #include "model.hpp"
 
 void MODEL :: display(){
-	DrawCapsule3D(	VGet(x+600*sinf(rotateY), y+y0+200.0f-500*sinf(rotateX), z+600*cosf(rotateY)),
+	/*DrawCapsule3D(	VGet(x+600*sinf(rotateY), y+y0+200.0f-500*sinf(rotateX), z+600*cosf(rotateY)),
 					VGet(x-200*sinf(rotateY), y+y0+200.0f+500*sinf(rotateX), z-200*cosf(rotateY)),
-					210.0f, 2, GetColor(255,255,255), GetColor(255,255,255), FALSE);
+					210.0f, 2, GetColor(255,255,255), GetColor(255,255,255), FALSE);*/
 	playTime += 200.0f;
 	if(playTime >= animTime)
 		playTime = 0.0f;
@@ -98,10 +98,8 @@ int MODEL :: shot(){
 	if(count > 10){
 		mS->newShots(	VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)),
 						VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)),
-						//15,
 						VGet(rotateX, rotateY-0.0025f, rotateZ),
 						VGet(rotateX, rotateY+0.0025f, rotateZ));
-						//85.0f);
 		count=0;
 		return 1;
 	}

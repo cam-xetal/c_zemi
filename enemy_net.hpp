@@ -25,16 +25,16 @@ public:
 
 inline void ENEMY_NET :: control(){
 	bool shot;
-	EnterCriticalSection(&cs);
 	net->recvData(&this->x, &this->y, &this->z, &this->rotateX, &this->rotateY, &this->rotateZ, &shot, &hp);
 	if(shot){
+		EnterCriticalSection(&cs);
 		this->shot();
+		LeaveCriticalSection(&cs);
 	}
-	LeaveCriticalSection(&cs);
 }
 inline unsigned __stdcall ENEMY_NET :: thread(void* param){
 	ENEMY_NET* en = (ENEMY_NET*)param;
-	while(1)
+	while(sflag1)
 		en->control();
 	return 0;
 }
@@ -42,8 +42,8 @@ inline int ENEMY_NET :: shot(){
 	//’e‚Ì”­ŽË
 	mS->newShots(	VGet(x+125*cos(PI-rotateY), y+250.0f, z+125*sin(PI-rotateY)),
 					VGet(x-125*cos(PI-rotateY), y+250.0f, z-125*sin(PI-rotateY)),
-					VGet(0, rotateY-0.0025f, 0),
-					VGet(0, rotateY+0.0025f, 0));
+					VGet(rotateX, rotateY-0.0025f, rotateZ),
+					VGet(rotateX, rotateY+0.0025f, rotateZ));
 	return 0;
 }
 
