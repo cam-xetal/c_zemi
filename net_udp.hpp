@@ -13,6 +13,7 @@ public:
 	NET_UDP();
 	NET_UDP(char* src_ip, int src_port, char* sin_ip, int sin_port);
 	~NET_UDP();
+	SOCKET getSock();
 	void setSrcAddr(char* ip, int port);
 	void setSinAddr(char* ip, int port);
 	void setBind();

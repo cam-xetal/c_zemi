@@ -18,15 +18,27 @@ private:
 	void fpsDisplay();
 	static unsigned __stdcall thread_recv(void* param){
 		char str[256];
+		fd_set fds, readfds;
+		struct timeval tv;
+
+		tv.tv_sec = 1;
+		tv.tv_usec = 0;
 		NET_TRANS* net = (NET_TRANS*)param;
+		FD_ZERO(&readfds);
+		FD_SET(net->getSock(), &readfds);
+		
 		while(!sflag1){
-			net->recv(str);
-			if(strncmp(str, "start", 5) == 0){
-				nflag1 = true;
-			}
-			if(strncmp(str, "ok", 2) == 0){
-				nflag1 = true;
-				nflag2 = true;
+			memcpy(&fds, &readfds, sizeof(fd_set));
+			select(0, &fds, NULL, NULL, &tv);
+			if(FD_ISSET(net->getSock(), &fds)) {
+				net->recv(str);
+				if(strncmp(str, "start", 5) == 0){
+					nflag1 = true;
+				}
+				if(strncmp(str, "ok", 2) == 0){
+					nflag1 = true;
+					nflag2 = true;
+				}
 			}
 		}
 		return 0;

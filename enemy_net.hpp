@@ -17,6 +17,7 @@ private:
 public:
 	ENEMY_NET(VECTOR pos, float rotate, SHOT* mS, NET_TRANS* net);
 	~ENEMY_NET();
+	NET_TRANS* getNet();
 	void start(ENEMY_NET* en);
 	void stop();
 	void enterCritical();
@@ -33,9 +34,24 @@ inline void ENEMY_NET :: control(){
 	}
 }
 inline unsigned __stdcall ENEMY_NET :: thread(void* param){
+	fd_set fds, readfds;
+	struct timeval tv;
+
+	tv.tv_sec =  1;
+	tv.tv_usec = 0;
+
 	ENEMY_NET* en = (ENEMY_NET*)param;
-	while(sflag1)
-		en->control();
+
+	FD_ZERO(&readfds);
+	FD_SET(en->getNet()->getSock(), &readfds);
+	while(sflag1){	
+		memcpy(&fds, &readfds, sizeof(fd_set));
+		select(0, &fds, NULL, NULL, &tv);
+		if(FD_ISSET(en->getNet()->getSock(), &fds)) {
+
+			en->control();
+		}
+	}
 	return 0;
 }
 inline int ENEMY_NET :: shot(){
@@ -45,6 +61,10 @@ inline int ENEMY_NET :: shot(){
 					VGet(rotateX, rotateY-0.0025f, rotateZ),
 					VGet(rotateX, rotateY+0.0025f, rotateZ));
 	return 0;
+}
+
+inline NET_TRANS* ENEMY_NET :: getNet(){
+	return this->net;
 }
 
 inline 	void ENEMY_NET :: enterCritical(){

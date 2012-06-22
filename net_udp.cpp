@@ -24,6 +24,10 @@ NET_UDP :: ~NET_UDP(){
 	WSACleanup();
 }
 
+SOCKET NET_UDP :: getSock(){
+	return this->sock;
+}
+
 void NET_UDP :: setSrcAddr(char* ip, int port){
 	src_addr.sin_family = AF_INET;
 	src_addr.sin_port = htons(port);

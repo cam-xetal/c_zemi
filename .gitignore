@@ -5,4 +5,5 @@ Log.txt
 *.vcxproj*
 *.vcproj*
 Debug/*
+Release/*
 !.git*

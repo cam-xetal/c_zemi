@@ -258,8 +258,6 @@ void MANAGIMENT :: battleModeH(){
 	
 
 	hTh = (HANDLE)_beginthreadex(NULL, 0, &thread_recv, net, 0, &thID);
-	//ResumeThread(hTh);
-	
 
 	while(1){
 		DrawFormatString(20, 20, GetColor(0, 0, 0), "通信中");
@@ -270,7 +268,6 @@ void MANAGIMENT :: battleModeH(){
 		if(nflag1 && nflag2)
 			break;
 		if(ProcessMessage() != 0 || CheckHitKey(KEY_INPUT_ESCAPE) != 0){
-			//TerminateThread(hTh, 0);
 			sflag1 = true;
 			WaitForSingleObject(hTh, INFINITE);
 			CloseHandle(hTh);
@@ -282,9 +279,8 @@ void MANAGIMENT :: battleModeH(){
 		}
 		ScreenFlip();
 	}
-	//TerminateThread(hTh, 0);
 	sflag1 = true;
-	//WaitForSingleObject(hTh, INFINITE);
+	WaitForSingleObject(hTh, INFINITE);
 	CloseHandle(hTh);
 	
 	//モデルの読み込み
@@ -312,10 +308,7 @@ void MANAGIMENT :: battleModeH(){
 		p->send();
 
 		p->doNotMove(buil.collision(p->getPos(), p->getRotate()));
-		//e->doNotMove(buil.collision(e->getPos(), e->getRotate()));
 		mShot->collisionTarget(buil.getModelHandle());
-		
-		//e->doNotMove(e->collision(p->getPos(), p->getRotate()));
 		
 		p->display();
 		e->display();
@@ -330,10 +323,6 @@ void MANAGIMENT :: battleModeH(){
 			break;
 		}
 		eH = e->damageCheck(mShot);
-		
-		
-
-	
 		//裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
