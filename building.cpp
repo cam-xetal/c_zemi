@@ -3,14 +3,14 @@
 
 BUILDING :: BUILDING(){
 	ModelHandle = MV1LoadModel("model\\building\\building.mqo");
-	MV1SetScale(ModelHandle, VGet(5.0f, 4.0f, 5.0f));
+	MV1SetScale(ModelHandle, VGet(7.5f, 7.5f, 7.5f));
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 	MV1SetupCollInfo(ModelHandle, -1, 5, 5, 5);
 }
 
 BUILDING :: BUILDING(VECTOR pos){
 	ModelHandle = MV1LoadModel("model\\building\\building.mqo");
-	MV1SetScale(ModelHandle, VGet(5.0f, 4.0f, 5.0f));
+	MV1SetScale(ModelHandle, VGet(7.5f, 7.5f, 7.5f));
 	MV1SetPosition(ModelHandle, pos);
 	MV1SetupCollInfo(ModelHandle, -1, 5, 5, 5);
 }

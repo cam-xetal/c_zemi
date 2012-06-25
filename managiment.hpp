@@ -79,11 +79,13 @@ inline void MANAGIMENT :: init(void){
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	//ライト指定
-	ChangeLightTypeDir(VGet(1.0, -1.0, 0.0));
-	CreateDirLightHandle(VGet(-1.0, 1, 0));
+	ChangeLightTypeDir(VGet(1, -1, 1));
+	//CreateDirLightHandle(VGet(1, -1, 1));
+	CreateDirLightHandle(VGet(-1, -1, -1));
 	//Zバッファ使用
 	SetUseZBuffer3D(TRUE);
 	SetWriteZBuffer3D(TRUE);
+	mode = 0;
 }
 
 

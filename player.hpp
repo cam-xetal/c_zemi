@@ -50,9 +50,9 @@ inline void PLAYER :: displayV(void){
 //public--start
 inline PLAYER :: PLAYER(VECTOR pos, float rotate, SHOT* mS) : MODEL(mS, rotate){
 	init();
-	this->x = pos.x;
-	this->y = pos.y;
-	this->z = pos.z;
+	this->x = pos.x+x0;
+	this->y = pos.y+y0;
+	this->z = pos.z+z0;
 }
 inline PLAYER :: PLAYER(VECTOR pos, float rotate, SHOT* mS, NET_TRANS* net) : MODEL(mS, rotate){
 	init();

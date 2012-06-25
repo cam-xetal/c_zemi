@@ -47,8 +47,7 @@ inline unsigned __stdcall ENEMY_NET :: thread(void* param){
 	while(sflag1){	
 		memcpy(&fds, &readfds, sizeof(fd_set));
 		select(0, &fds, NULL, NULL, &tv);
-		if(FD_ISSET(en->getNet()->getSock(), &fds)) {
-
+		if(FD_ISSET(en->getNet()->getSock(), &fds)){
 			en->control();
 		}
 	}

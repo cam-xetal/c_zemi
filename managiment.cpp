@@ -22,7 +22,7 @@ void MANAGIMENT :: fpsDisplay(){
 }
 
 int MANAGIMENT :: selectMode(void){
-	int select = 0;
+	int select = mode;
 	int count = 0;
 	Sleep(500);
 	while(ProcessMessage() == 0){
@@ -84,7 +84,7 @@ void MANAGIMENT :: freeMode(){
 	int ModelHandle;
 	//è∞ì«Ç›çûÇ›
 	ModelHandle = MV1LoadModel("model\\floor\\floor.mqo");
-	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
+	MV1SetScale(ModelHandle, VGet(250.0f, 100.0f, 250.0f));
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 
 	BUILDING buil;
@@ -131,7 +131,7 @@ void MANAGIMENT :: battleModeC(){
 	int ModelHandle;
 	//è∞ì«Ç›çûÇ›
 	ModelHandle = MV1LoadModel("model\\floor\\floor.mqo");
-	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
+	MV1SetScale(ModelHandle, VGet(250.0f, 100.0f, 250.0f));
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 
 	//íeÇÃîzóÒÇÃämï€
@@ -228,7 +228,7 @@ void MANAGIMENT :: battleModeH(){
 	int ModelHandle;
 	//è∞ì«Ç›çûÇ›
 	ModelHandle = MV1LoadModel("model\\floor\\floor.mqo");
-	MV1SetScale(ModelHandle, VGet(1.5f, 0, 1.5f));
+	MV1SetScale(ModelHandle, VGet(250.0f, 100.0f, 250.0f));
 	MV1SetPosition(ModelHandle, VGet(0, 0, 0));
 
 	BUILDING buil;
